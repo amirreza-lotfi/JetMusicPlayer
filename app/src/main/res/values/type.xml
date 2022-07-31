@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--    <style name="Theme.MusicPlayer.Title" parent="TextAppearance.MaterialComponents.Headline1">-->
+<!--        <item name="android:textSize">20sp</item>-->
+<!--        <item name="android:textColor">?colorOnPrimary</item>-->
+<!--    </style>-->
+
+<!--    <style name="Theme.MusicPlayer.H6" parent="TextAppearance.MaterialComponents.Headline6">-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="android:textColor">?colorOnPrimary</item>-->
+<!--    </style>-->
+
+<!--    <style name="Theme.MusicPlayer.Caption" parent="TextAppearance.MaterialComponents.Caption">-->
+<!--        <item name="android:textSize">11sp</item>-->
+<!--        <item name="android:textColor">?colorSecondary</item>-->
+<!--    </style>-->
+
+</resources>
