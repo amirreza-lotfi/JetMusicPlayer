@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature_home.HomeFragment">
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?colorPrimaryVariant"
+    tools:context=".feature_home.presentation.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/background_home_items_row"
+        android:padding="16dp">
 
-</FrameLayout>
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:srcCompat="@drawable/background_home_items_row"/>-->
+        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
+            android:id="@+id/homeActionItem10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconImageSrc="@drawable/ic_track_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/homeActionItem9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Tracks"
+            tools:countOfElement="123" />
+
+        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
+            android:id="@+id/homeActionItem9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconImageSrc="@drawable/ic_person_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/homeActionItem11"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/homeActionItem10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Artists"
+            tools:countOfElement="123" />
+
+        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
+            android:id="@+id/homeActionItem11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconImageSrc="@drawable/ic_playlist_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/homeActionItem12"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/homeActionItem9"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="PlayList"
+            tools:countOfElement="123" />
+
+        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
+            android:id="@+id/homeActionItem12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconImageSrc="@drawable/ic_album_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/homeActionItem11"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Albums"
+            tools:countOfElement="123" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

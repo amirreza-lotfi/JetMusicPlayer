@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.feature_home
+package com.amirreza.musicplayer.feature_home.presentation
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -8,10 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.RESPONSE_OF_PERMISSION_REQUEST
 import com.amirreza.musicplayer.base.JetFragment
 import com.amirreza.musicplayer.databinding.FragmentHomeBinding
@@ -20,7 +16,7 @@ import com.amirreza.musicplayer.databinding.FragmentHomeBinding
 class HomeFragment : JetFragment() {
     lateinit var binding: FragmentHomeBinding
 
-    private val viewModel = HomeViewModel()
+    private val viewModel = MusicViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

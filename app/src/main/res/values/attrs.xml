@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <attr name="divider" format="string"/>-->
+    <declare-styleable name="HomeActionItem">
+        <attr name="iconImageSrc" format="reference"/>
+        <attr name="title" format="string"/>
+        <attr name="countOfElement" format="string"/>
+    </declare-styleable>
 </resources>

@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".di.JetApplication"
         android:theme="@style/Theme.MusicPlayer"
         tools:targetApi="31">
         <activity
