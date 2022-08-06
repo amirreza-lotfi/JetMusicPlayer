@@ -4,4 +4,6 @@
     <string name="tracks">Tracks</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_button">back button</string>
+    <string name="playlist_button">playlist button</string>
 </resources>

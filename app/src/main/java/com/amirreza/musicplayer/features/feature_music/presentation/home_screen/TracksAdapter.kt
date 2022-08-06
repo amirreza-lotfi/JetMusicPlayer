@@ -11,16 +11,21 @@ import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnTrackClickEvent
 import com.bumptech.glide.Glide
 
-class TracksAdapter(val onTrackClickEvent: OnTrackClickEvent,val context: Context, private val trackList: List<Track>):RecyclerView.Adapter<TracksAdapter.TrackHolder>() {
+class TracksAdapter(
+    val onTrackClickEvent: OnTrackClickEvent,
+    val context: Context,
+    private val trackList: List<Track>
+) : RecyclerView.Adapter<TracksAdapter.TrackHolder>() {
 
-    inner class TrackHolder(private val binding: ItemTrackBinding):RecyclerView.ViewHolder(binding.root){
-        fun onBind(track: Track){
+    inner class TrackHolder(private val binding: ItemTrackBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun onBind(track: Track) {
             binding.track.setOnClickListener {
                 onTrackClickEvent.click(track)
             }
             Glide.with(context)
                 .load(track.albumArtPic)
-                .centerInside()
+                .centerCrop()
                 .placeholder(R.drawable.ic_album_24)
                 .into(binding.trackArtPic)
             binding.nameOfTrack.text = track.trackName
@@ -35,7 +40,7 @@ class TracksAdapter(val onTrackClickEvent: OnTrackClickEvent,val context: Contex
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return TrackHolder(ItemTrackBinding.inflate(layoutInflater,parent,false))
+        return TrackHolder(ItemTrackBinding.inflate(layoutInflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: TrackHolder, position: Int) {

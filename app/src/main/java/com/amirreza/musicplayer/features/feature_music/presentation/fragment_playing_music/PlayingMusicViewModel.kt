@@ -13,8 +13,11 @@ class PlayingMusicViewModel(
     private val _trackList = MutableLiveData<List<Track>>()
     val trackList: LiveData<List<Track>> = _trackList
 
+    private val _currentTrack = MutableLiveData<Track>()
+    val currentTrack: LiveData<Track> = _currentTrack
     init {
         _trackList.value = bundle.getParcelableArrayList(BUNDLE_TRACKLIST_TO_PLAYING_FRAGMENT)
+        _currentTrack.value = _trackList.value!!.get(0)
     }
 
 }
