@@ -8,5 +8,7 @@
     <color name="solidWhite">#FFFFFF</color>
     <color name="white">#FFF2F2F2</color>
     <color name="black">#FF131819</color>
+    <color name="darkGray">#FF787E80</color>
+    <color name="backGroundOfTimer">#FF1A2224</color>
 
 </resources>

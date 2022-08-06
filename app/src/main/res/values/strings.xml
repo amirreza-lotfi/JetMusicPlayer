@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MusicPlayer</string>
     <string name="album_art_dir">content://media/external/audio/albumart</string>
+    <string name="tracks">Tracks</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

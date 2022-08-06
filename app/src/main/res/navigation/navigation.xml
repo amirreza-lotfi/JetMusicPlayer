@@ -7,7 +7,16 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.amirreza.musicplayer.feature_home.presentation.HomeFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.home_screen.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_playingMusicFragment"
+            app:destination="@id/playingMusicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playingMusicFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_playing_music.PlayingMusicFragment"
+        android:label="fragment_playing_music"
+        tools:layout="@layout/fragment_playing_music" />
 </navigation>

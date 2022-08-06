@@ -6,71 +6,97 @@
     android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?colorPrimaryVariant"
-    tools:context=".feature_home.presentation.HomeFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    tools:context=".features.feature_music.presentation.home_screen.HomeFragment">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="@drawable/background_home_items_row"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-<!--        <androidx.appcompat.widget.AppCompatImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:srcCompat="@drawable/background_home_items_row"/>-->
-        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
-            android:id="@+id/homeActionItem10"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:iconImageSrc="@drawable/ic_track_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/homeActionItem9"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Tracks"
-            tools:countOfElement="123" />
+            android:layout_gravity="top"
+            android:background="@drawable/background_home_items_row"
+            android:padding="8dp"
+            android:layout_marginBottom="32dp">
 
-        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
-            android:id="@+id/homeActionItem9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:iconImageSrc="@drawable/ic_person_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/homeActionItem11"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/homeActionItem10"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Artists"
-            tools:countOfElement="123" />
 
-        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
-            android:id="@+id/homeActionItem11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:iconImageSrc="@drawable/ic_playlist_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/homeActionItem12"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/homeActionItem9"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="PlayList"
-            tools:countOfElement="123" />
+            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+                android:id="@+id/tracks_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:iconImageSrc="@drawable/ic_track_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/artist_item"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Tracks"
+                app:countOfElement="0" />
 
-        <com.amirreza.musicplayer.feature_home.presentation.components.HomeActionItem
-            android:id="@+id/homeActionItem12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:iconImageSrc="@drawable/ic_album_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/homeActionItem11"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Albums"
-            tools:countOfElement="123" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+                android:id="@+id/artist_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:iconImageSrc="@drawable/ic_person_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/playList_item"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tracks_item"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Artists"
+                tools:countOfElement="123" />
+
+            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+                android:id="@+id/playList_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:iconImageSrc="@drawable/ic_playlist_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/album_item"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/artist_item"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="PlayList"
+                tools:countOfElement="123" />
+
+            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+                android:id="@+id/album_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:iconImageSrc="@drawable/ic_album_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/playList_item"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Albums"
+                tools:countOfElement="123" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:paddingTop="38dp"
+            android:paddingHorizontal="28dp"
+            android:orientation="vertical"
+            android:background="@drawable/background_home_items_row">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tracks"
+                android:layout_marginBottom="32dp"
+                android:textAppearance="?textAppearanceHeadline1"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tracksRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.amirreza.musicplayer.feature_home.presentation.HomeFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.home_screen.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

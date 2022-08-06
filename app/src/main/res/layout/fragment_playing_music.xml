@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.feature_music.presentation.fragment_playing_music.PlayingMusicFragment">
+
+    <ImageView
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="28dp"
+        android:id="@+id/imageView"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_ios_24" />
+
+    <TextView
+        android:id="@+id/nameOfSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        tools:text="Are Food allergies more common now" />
+
+    <TextView
+        android:id="@+id/songArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/nameOfSong"
+        app:layout_constraintStart_toStartOf="@+id/nameOfSong"
+        app:layout_constraintTop_toBottomOf="@+id/nameOfSong"
+        tools:text="Erica jons" />
+
+    <ImageView
+        android:layout_marginEnd="28dp"
+        android:id="@+id/imageView2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        app:srcCompat="@drawable/img_1" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/trackProperties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="36dp"
+        android:paddingVertical="12dp"
+        android:background="@drawable/background_playing_properties"
+        app:layout_constraintTop_toBottomOf="@+id/songArtist"
+        tools:layout_editor_absoluteX="28dp">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView7"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView10"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img_4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView11"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView10"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/trackProperties">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#CC1A2123"
+            android:orientation="horizontal"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="18dp"
+            android:translationZ="34dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="24sp"
+                android:src="@drawable/img_7" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/solidWhite"
+                tools:text="Are Food allergies more common now?" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:srcCompat="@drawable/img_6" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:src="@drawable/img_6"
+        android:alpha="0.07"
+        app:layout_constraintTop_toTopOf="@id/materialCardView"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="?colorPrimaryVariant"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
