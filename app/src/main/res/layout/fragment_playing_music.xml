@@ -195,7 +195,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/img"
+                android:src="@drawable/ic_previous"
                 app:layout_constraintBottom_toBottomOf="@id/pausePlayBtn"
                 app:layout_constraintEnd_toStartOf="@+id/pausePlayBtn"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -217,7 +217,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:rotation="180"
-                android:src="@drawable/img"
+                android:src="@drawable/ic_previous"
                 app:layout_constraintBottom_toBottomOf="@+id/pausePlayBtn"
                 app:layout_constraintEnd_toStartOf="@+id/imageView2"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -237,10 +237,27 @@
             <FrameLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:background="?colorSecondary"
-                app:layout_constraintTop_toBottomOf="@+id/pausePlayBtn" />
+                app:layout_constraintTop_toBottomOf="@+id/pausePlayBtn">
+                <FrameLayout
+                    android:id="@+id/slider_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/background_slider_empty"
+                    android:layout_gravity="start|center"/>
+                <FrameLayout
+                    android:id="@+id/slider_fill"
+                    android:layout_width="0dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="start|center"/>
+                <FrameLayout
+                    android:id="@+id/slider_curser"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/ic_slider_curser"
+                    android:layout_gravity="start"/>
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -261,11 +278,13 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <FrameLayout
             android:id="@+id/hider"
             android:background="@drawable/background_hidder"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:layout_constraintTop_toTopOf="@id/backgroundTrackImage"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_homeFragment_to_playingMusicFragment"
             app:destination="@id/playingMusicFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_tracksFragment"
+            app:destination="@id/tracksFragment" />
     </fragment>
     <fragment
         android:id="@+id/playingMusicFragment"
         android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_playing_music.PlayingMusicFragment"
         android:label="fragment_playing_music"
         tools:layout="@layout/fragment_playing_music" />
+    <fragment
+        android:id="@+id/tracksFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.tracks_screen.TracksFragment"
+        android:label="fragment_tracks"
+        tools:layout="@layout/view_item_list" />
 </navigation>

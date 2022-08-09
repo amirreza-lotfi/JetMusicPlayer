@@ -2,6 +2,8 @@ package com.amirreza.musicplayer.features.feature_music.presentation
 
 import android.content.ContentUris
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -10,6 +12,7 @@ import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Artist
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import java.io.File
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class MusicHelper {
@@ -180,6 +183,22 @@ class MusicHelper {
                 second = "0$second"
             }
             return "$minute:$second"
+        }
+        fun getBitmapOfTrack(context: Context, track: Track):Bitmap?{
+            val uri = track.albumArtPic
+            if (track.albumArtPic.isBlank())
+                return null
+
+            return try {
+                val fileDescriptor = context.contentResolver.openFileDescriptor(Uri.parse(uri), "r")
+                if (uri == null) return null
+                val bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor!!.fileDescriptor)
+                fileDescriptor.close()
+                bitmap
+            } catch (e: IOException) {
+                null
+            }
+
         }
     }
 }

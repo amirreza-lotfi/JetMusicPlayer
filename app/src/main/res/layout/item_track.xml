@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:id="@+id/track"
+    android:id="@+id/item"
     android:layout_height="wrap_content"
     android:background="?colorPrimary"
     xmlns:tools="http://schemas.android.com/tools">
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
-            android:id="@+id/trackArtPic"
+            android:id="@+id/artcPicOfItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="musicArt"
@@ -25,7 +25,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
-        android:id="@+id/nameOfTrack"
+        android:id="@+id/titleOfItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -66,14 +66,14 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/artistOfTrack"
+        android:id="@+id/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:textAppearance="?textAppearanceCaption"
         app:layout_constraintStart_toEndOf="@+id/trackArtPicCardView"
-        app:layout_constraintTop_toBottomOf="@+id/nameOfTrack"
+        app:layout_constraintTop_toBottomOf="@+id/titleOfItem"
         tools:text="Marjan Farsadi" />
 
     <View

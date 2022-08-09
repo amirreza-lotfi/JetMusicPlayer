@@ -8,14 +8,17 @@
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_home_items_row.xml" value="0.1765" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_playing_bottom.xml" value="0.1785" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_playing_properties.xml" value="0.1795" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_slider_empty.xml" value="0.157" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_album_24.xml" value="0.1" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_arrow_back_ios_24.xml" value="0.1585" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_person_24.xml" value="0.1" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_playlist_24.xml" value="0.1" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_slider_curser.xml" value="0.157" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_track_24.xml" value="0.156" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_playing_music.xml" value="0.22" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_tracks.xml" value="0.17083333333333334" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/item_track.xml" value="0.6666666666666666" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/view_home_action_item.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/view_permission_not_allowed.xml" value="0.16979166666666667" />

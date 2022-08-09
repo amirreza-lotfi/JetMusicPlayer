@@ -8,9 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,12 +17,12 @@ import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.databinding.FragmentHomeBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnTrackClickEvent
-import com.amirreza.musicplayer.general.BUNDLE_TRACKLIST_TO_PLAYING_FRAGMENT
+import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
+import com.amirreza.musicplayer.general.CARRY_TRACK_LIST
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class HomeFragment : JetFragment(),OnTrackClickEvent{
+class HomeFragment : JetFragment(),OnItemClickEvent{
     lateinit var binding: FragmentHomeBinding
 
     private val viewModel: MusicViewModel by viewModel()
@@ -50,6 +47,14 @@ class HomeFragment : JetFragment(),OnTrackClickEvent{
         setAlbumsCountInUi()
         setArtistsCountInUi()
         setPlayListCountInUi()
+
+        binding.tracksItem.setOnClickListener {
+            viewModel.tracksLiveData.value?.let {
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(CARRY_TRACK_LIST,it as ArrayList)
+                findNavController().navigate(R.id.action_homeFragment_to_tracksFragment,bundle)
+            }
+        }
     }
 
     private fun setUpPermissions(){
@@ -78,7 +83,7 @@ class HomeFragment : JetFragment(),OnTrackClickEvent{
         val recyclerView = binding.tracksRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         viewModel.tracksLiveData.observe(viewLifecycleOwner){
-            recyclerView.adapter = TracksAdapter(this,requireContext(),it!!)
+            recyclerView.adapter = ItemListAdapter(this,requireContext(),it!!)
         }
 
     }
@@ -104,10 +109,10 @@ class HomeFragment : JetFragment(),OnTrackClickEvent{
             val bundle = Bundle()
             val trackList = viewModel.putTrackToFirst(it.toMutableList(),track)
 
-            bundle.putParcelableArrayList(BUNDLE_TRACKLIST_TO_PLAYING_FRAGMENT,trackList as ArrayList)
+            bundle.putParcelableArrayList(CARRY_TRACK_LIST,trackList as ArrayList)
 
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
-
     }
+
 }
