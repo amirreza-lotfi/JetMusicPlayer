@@ -104,15 +104,16 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         binding.playListItem.setItemCount(viewModel.getPlayListCount())
     }
 
-    override fun click(track: Track) {
+    override fun <T> click(item: T) {
         viewModel.tracksLiveData.value?.let {
             val bundle = Bundle()
-            val trackList = viewModel.putTrackToFirst(it.toMutableList(),track)
+            val trackList = viewModel.putTrackToFirst(it.toMutableList(),item as Track)
 
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
 
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }
+
 
 }

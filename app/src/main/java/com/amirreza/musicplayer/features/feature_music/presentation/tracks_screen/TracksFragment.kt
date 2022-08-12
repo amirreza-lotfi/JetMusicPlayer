@@ -9,18 +9,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
-import com.amirreza.musicplayer.databinding.FragmentTracksBinding
+import com.amirreza.musicplayer.databinding.ViewItemListBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.ItemListAdapter
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
+import com.amirreza.musicplayer.general.JetFragment
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 
-class TracksFragment : Fragment(), OnItemClickEvent{
+class TracksFragment : JetFragment(), OnItemClickEvent{
 
-    lateinit var binding: FragmentTracksBinding
+    lateinit var binding: ViewItemListBinding
 
     private val viewModel:TrackViewModel by inject{ parametersOf(this.arguments)  }
 
@@ -28,7 +29,7 @@ class TracksFragment : Fragment(), OnItemClickEvent{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View{
-        binding = FragmentTracksBinding.inflate(inflater,container,false)
+        binding = ViewItemListBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -42,10 +43,10 @@ class TracksFragment : Fragment(), OnItemClickEvent{
         }
     }
 
-    override fun click(track: Track) {
+    override fun <T>click(track: T) {
         viewModel.trackList.value?.let {
             val bundle = Bundle()
-            val trackList = viewModel.putTrackToFirst(it.toMutableList(),track)
+            val trackList = viewModel.putTrackToFirst(it.toMutableList(),track as Track)
 
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
 

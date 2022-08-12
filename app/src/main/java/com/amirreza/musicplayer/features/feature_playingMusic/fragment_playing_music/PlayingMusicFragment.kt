@@ -1,7 +1,9 @@
 package com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music
 
-import android.content.Intent
+import android.content.*
+import android.content.Context.BIND_AUTO_CREATE
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +12,18 @@ import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
+import com.amirreza.musicplayer.general.NotificationActions
+import com.amirreza.musicplayer.general.NotificationConst
+import com.amirreza.musicplayer.general.NotificationConst.NOTIFICATION_ACTION_BROADCAST
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 
-class PlayingMusicFragment : JetFragment() {
+class PlayingMusicFragment : JetFragment(){
     lateinit var binding: FragmentPlayingMusicBinding
     private val viewModel: PlayingMusicViewModel by inject(){ parametersOf(this.arguments)}
+    private var playingMusicService:PlayingMusicService? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +49,51 @@ class PlayingMusicFragment : JetFragment() {
             activity?.startService(Intent(requireContext(),PlayingMusicService::class.java))
         }
 
+        activity?.let{
+            val startPlayingMusicServiceIntent = Intent(it,PlayingMusicService::class.java)
+            it.startService(startPlayingMusicServiceIntent)
+            it.registerReceiver(object: BroadcastReceiver(){
+                override fun onReceive(_context: Context?, _intent: Intent?) {
+                    _context?.let{ context->
+                        _intent?.let {  intent->
+                            when(intent.extras?.getString("actionName") ?: ""){
+                                NotificationActions.NEXT.actionName->{
+                                    playingMusicService?.playNextTrack()
+                                }
+                                NotificationActions.PREVIOUS.actionName->{
+                                    playingMusicService?.playPreviousTrack()
+                                }
+                                NotificationActions.CLOSE.actionName->{
+                                    //todo
+                                }
+                                NotificationActions.PLAY_PAUSE.actionName->{
+                                    playingMusicService?.let { service->
+                                        if(service.isTrackPlaying())
+                                            service.pauseTrack()
+                                        else{
+                                            service.resumeTrack()
+                                        }
+                                    }
+                                }
 
+                                else -> {}
+                            }
+                        }
+                    }
+                }
+            }, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
+            it.bindService(startPlayingMusicServiceIntent,object : ServiceConnection{
+                override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+                    playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
+                }
+
+                override fun onServiceDisconnected(p0: ComponentName?) {
+                    playingMusicService = null
+                }
+
+            },BIND_AUTO_CREATE)
+
+        }
     }
 
     private fun setTrackArtist(artist: String) {
@@ -67,4 +117,5 @@ class PlayingMusicFragment : JetFragment() {
             .placeholder(R.drawable.ic_album_24)
             .into(binding.trackMainImage)
     }
+
 }

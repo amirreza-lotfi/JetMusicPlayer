@@ -25,7 +25,7 @@ class MusicPlayerNotification(
 
     private var notificationBuilder:NotificationCompat.Builder?= null
 
-    private fun createNotification(track: Track): Notification {
+    fun createNotification(track: Track): Notification {
         createNotificationChannel()
 
         notificationBuilder = NotificationCompat.Builder(context,NotificationConst.CHANNEL_ID)
@@ -45,7 +45,7 @@ class MusicPlayerNotification(
         return notificationBuilder!!.build()
     }
 
-    private fun updateNotification(newTrack:Track,isTrackPlaying:Boolean){
+    fun updateNotification(newTrack:Track,isTrackPlaying:Boolean){
         notificationBuilder?.let {
             val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
             it.setOngoing(isTrackPlaying)
