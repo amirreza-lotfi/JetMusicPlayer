@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_player_service
+package com.amirreza.musicplayer.features.feature_playingMusic
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -13,7 +13,10 @@ import androidx.core.app.NotificationManagerCompat
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
+import com.amirreza.musicplayer.features.feature_playingMusic.services.NotificationActionBroadcast
+import com.amirreza.musicplayer.general.NotificationActions
 import com.amirreza.musicplayer.general.NotificationConst
+
 
 class MusicPlayerNotification(
     private val context:Context,
@@ -25,18 +28,16 @@ class MusicPlayerNotification(
     private fun createNotification(track: Track): Notification {
         createNotificationChannel()
 
-        //todo openPlayerIntent
-
         notificationBuilder = NotificationCompat.Builder(context,NotificationConst.CHANNEL_ID)
         notificationBuilder!!
                 .setSmallIcon(R.drawable.ic_track_24)
                 .setLargeIcon(MusicHelper.getBitmapOfTrack(context,track))
                 .setContentTitle(track.trackName)
                 .setContentText(track.artist)
-            .addAction(notificationAction(NotificationAction.PREVIOUS))
-            .addAction(notificationAction(NotificationAction.PLAY_PAUSE))
-            .addAction(notificationAction(NotificationAction.NEXT))
-            .addAction(notificationAction(NotificationAction.CLOSE))
+            .addAction(notificationAction(NotificationActions.PREVIOUS))
+            .addAction(notificationAction(NotificationActions.PLAY_PAUSE))
+            .addAction(notificationAction(NotificationActions.NEXT))
+            .addAction(notificationAction(NotificationActions.CLOSE))
         notificationBuilder!!.setStyle(
             androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2)
         )
@@ -66,32 +67,30 @@ class MusicPlayerNotification(
         }
     }
 
-    private fun notificationAction(action:NotificationAction): NotificationCompat.Action {
+    private fun notificationAction(action:NotificationActions): NotificationCompat.Action {
         val icon = when(action){
-            NotificationAction.PLAY_PAUSE ->{
+            NotificationActions.PLAY_PAUSE ->{
                 R.drawable.ic_play
             }
 
-            NotificationAction.NEXT ->{
+            NotificationActions.NEXT ->{
                 R.drawable.ic_previous
             }
-            NotificationAction.PREVIOUS->{
+            NotificationActions.PREVIOUS->{
                 R.drawable.ic_previous
             }
-            NotificationAction.CLOSE->{
+            NotificationActions.CLOSE->{
                 R.drawable.ic_close
             }
         }
-        return NotificationCompat.Action.Builder(icon,"action",playerActionIntent(action)).build()
+        return NotificationCompat.Action.Builder(icon,"action",createPendingIntent(action.actionName)).build()
     }
 
-    private fun playerActionIntent(action:NotificationAction):PendingIntent{
-        val intent = Intent()
-        intent.action = action.actionName
-        return PendingIntent.getBroadcast(context,NotificationConst.ACTION_INTENT,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+
+    private fun createPendingIntent(actionName:String): PendingIntent {
+        return PendingIntent
+            .getBroadcast(context,NotificationConst.MUSIC_PLAYER_NOTIFICATION_BROADCAST_REQUEST_ID,
+                Intent(context, NotificationActionBroadcast::class.java).setAction(actionName),PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }
 
-enum class NotificationAction(val actionName:String){
-    PLAY_PAUSE("play,pause"),NEXT("next"),PREVIOUS("previous"),CLOSE("close")
-}

@@ -5,11 +5,10 @@ import android.os.Bundle
 import com.amirreza.musicplayer.features.feature_music.data.MusicRepositoryImpl
 import com.amirreza.musicplayer.features.feature_music.domain.repository.MusicRepository
 import com.amirreza.musicplayer.features.feature_music.presentation.feature_albums.AlbumsViewModel
-import com.amirreza.musicplayer.features.feature_music.presentation.fragment_playing_music.PlayingMusicViewModel
+import com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music.PlayingMusicViewModel
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.MusicViewModel
 import com.amirreza.musicplayer.features.feature_music.presentation.tracks_screen.TrackViewModel
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.SimpleExoPlayer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

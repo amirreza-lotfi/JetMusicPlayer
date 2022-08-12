@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/playingMusicFragment"
-        android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_playing_music.PlayingMusicFragment"
+        android:name="com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music.PlayingMusicFragment"
         android:label="fragment_playing_music"
         tools:layout="@layout/fragment_playing_music" />
     <fragment

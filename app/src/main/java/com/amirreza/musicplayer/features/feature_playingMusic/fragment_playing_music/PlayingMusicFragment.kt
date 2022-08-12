@@ -1,5 +1,6 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.fragment_playing_music
+package com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,13 @@ import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
 import com.amirreza.musicplayer.general.JetFragment
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_track.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 
 class PlayingMusicFragment : JetFragment() {
     lateinit var binding: FragmentPlayingMusicBinding
-    private val viewModel:PlayingMusicViewModel by inject(){ parametersOf(this.arguments)}
+    private val viewModel: PlayingMusicViewModel by inject(){ parametersOf(this.arguments)}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,12 +27,16 @@ class PlayingMusicFragment : JetFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.currentTrack.observe(viewLifecycleOwner){
             setTrackName(it.trackName)
             setTrackArtist(it.artist)
             setTrackBackgroundImage(it.albumArtPic)
             setTrackMainImage(it.albumArtPic)
         }
+
+        activity?.startService(Intent(requireContext(),Pla))
+
     }
 
     private fun setTrackArtist(artist: String) {
@@ -59,6 +63,4 @@ class PlayingMusicFragment : JetFragment() {
             .placeholder(R.drawable.ic_album_24)
             .into(binding.trackMainImage)
     }
-
-
 }
