@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
-import com.amirreza.musicplayer.general.CARRY_ALBUM_LIST
+import com.amirreza.musicplayer.general.EXTRA_ALBUM_LIST
 import com.amirreza.musicplayer.general.JetViewModel
 
 class AlbumsViewModel(
@@ -15,6 +15,6 @@ class AlbumsViewModel(
     val albumList: LiveData<ArrayList<Album>> = _albumList
 
     init {
-        _albumList.value = bundle.getParcelableArrayList(CARRY_ALBUM_LIST)
+        _albumList.value = bundle.getParcelableArrayList(EXTRA_ALBUM_LIST)
     }
 }

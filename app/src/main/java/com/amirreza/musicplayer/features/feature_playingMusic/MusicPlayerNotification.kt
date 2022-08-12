@@ -20,7 +20,7 @@ import com.amirreza.musicplayer.general.NotificationConst
 
 class MusicPlayerNotification(
     private val context:Context,
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManagerCompat
 ) {
 
     private var notificationBuilder:NotificationCompat.Builder?= null

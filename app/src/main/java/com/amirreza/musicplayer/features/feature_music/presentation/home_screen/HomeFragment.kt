@@ -18,7 +18,7 @@ import com.amirreza.musicplayer.databinding.FragmentHomeBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
-import com.amirreza.musicplayer.general.CARRY_TRACK_LIST
+import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -51,7 +51,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         binding.tracksItem.setOnClickListener {
             viewModel.tracksLiveData.value?.let {
                 val bundle = Bundle()
-                bundle.putParcelableArrayList(CARRY_TRACK_LIST,it as ArrayList)
+                bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it as ArrayList)
                 findNavController().navigate(R.id.action_homeFragment_to_tracksFragment,bundle)
             }
         }
@@ -109,7 +109,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
             val bundle = Bundle()
             val trackList = viewModel.putTrackToFirst(it.toMutableList(),track)
 
-            bundle.putParcelableArrayList(CARRY_TRACK_LIST,trackList as ArrayList)
+            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
 
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }

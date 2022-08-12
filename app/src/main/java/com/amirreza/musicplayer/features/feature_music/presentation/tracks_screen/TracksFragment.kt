@@ -13,7 +13,7 @@ import com.amirreza.musicplayer.databinding.FragmentTracksBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.ItemListAdapter
 import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
-import com.amirreza.musicplayer.general.CARRY_TRACK_LIST
+import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -47,7 +47,7 @@ class TracksFragment : Fragment(), OnItemClickEvent{
             val bundle = Bundle()
             val trackList = viewModel.putTrackToFirst(it.toMutableList(),track)
 
-            bundle.putParcelableArrayList(CARRY_TRACK_LIST,trackList as ArrayList)
+            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
 
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }

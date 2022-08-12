@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
+import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
+import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
@@ -35,19 +37,22 @@ class PlayingMusicFragment : JetFragment() {
             setTrackMainImage(it.albumArtPic)
         }
 
-        activity?.startService(Intent(requireContext(),Pla))
+        viewModel.trackList.value?.let {
+            val intent = Intent(requireContext(),PlayingMusicService::class.java)
+            intent.putParcelableArrayListExtra(EXTRA_TRACK_LIST,it as ArrayList)
+            activity?.startService(Intent(requireContext(),PlayingMusicService::class.java))
+        }
+
 
     }
 
     private fun setTrackArtist(artist: String) {
         binding.songArtist.text = artist
     }
-
     private fun setTrackName(trackName:String) {
         binding.nameOfSong.text = trackName
         binding.songNameInMaterialCardView.text = trackName
     }
-
     private fun setTrackBackgroundImage(trackArtPath:String){
         Glide.with(requireContext())
             .load(trackArtPath)
@@ -55,7 +60,6 @@ class PlayingMusicFragment : JetFragment() {
             .placeholder(R.drawable.ic_album_24)
             .into(binding.backgroundTrackImage)
     }
-
     private fun setTrackMainImage(trackArtPath:String){
         Glide.with(requireContext())
             .load(trackArtPath)
