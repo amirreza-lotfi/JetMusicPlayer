@@ -29,11 +29,12 @@ class PlayingMusicService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let { _intent->
-            val tracks:ArrayList<Track> = _intent.getBundleExtra(EXTRA_TRACK_LIST)?.getParcelableArrayList(EXTRA_TRACK_LIST) ?: arrayListOf()
+            val tracks:ArrayList<Track> = _intent.getParcelableArrayListExtra(EXTRA_TRACK_LIST) ?: arrayListOf()
             playerManager = PlayerManager(tracks,exoPlayer)
             musicPlayerNotification = MusicPlayerNotification(this@PlayingMusicService,NotificationManagerCompat.from(this@PlayingMusicService))
             musicPlayerNotification.createNotification(tracks[0])
         }
+        playTrack()
         return START_STICKY
     }
 

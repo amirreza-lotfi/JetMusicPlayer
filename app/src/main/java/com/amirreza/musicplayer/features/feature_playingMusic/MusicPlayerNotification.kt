@@ -1,6 +1,5 @@
 package com.amirreza.musicplayer.features.feature_playingMusic
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -23,13 +22,12 @@ class MusicPlayerNotification(
     private val notificationManager: NotificationManagerCompat
 ) {
 
-    private var notificationBuilder:NotificationCompat.Builder?= null
+    private var notification:NotificationCompat.Builder?= null
 
-    fun createNotification(track: Track): Notification {
+    fun createNotification(track: Track){
         createNotificationChannel()
 
-        notificationBuilder = NotificationCompat.Builder(context,NotificationConst.CHANNEL_ID)
-        notificationBuilder!!
+        notification = NotificationCompat.Builder(context,NotificationConst.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_track_24)
                 .setLargeIcon(MusicHelper.getBitmapOfTrack(context,track))
                 .setContentTitle(track.trackName)
@@ -38,15 +36,15 @@ class MusicPlayerNotification(
             .addAction(notificationAction(NotificationActions.PLAY_PAUSE))
             .addAction(notificationAction(NotificationActions.NEXT))
             .addAction(notificationAction(NotificationActions.CLOSE))
-        notificationBuilder!!.setStyle(
-            androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2)
-        )
+            notification!!.setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2)
+            )
 
-        return notificationBuilder!!.build()
+        notificationManager.notify(1,notification!!.build())
     }
 
     fun updateNotification(newTrack:Track,isTrackPlaying:Boolean){
-        notificationBuilder?.let {
+        notification?.let {
             val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
             it.setOngoing(isTrackPlaying)
             it.setLargeIcon(artPic)
@@ -60,7 +58,8 @@ class MusicPlayerNotification(
     @RequiresApi(26)
     private fun createNotificationChannel(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.getNotificationChannel(NotificationConst.CHANNEL_ID)?.let {
+            val notificationChannel = notificationManager.getNotificationChannel(NotificationConst.CHANNEL_ID)
+            if (notificationChannel==null){
                 val channel = NotificationChannel(NotificationConst.CHANNEL_ID,"Jet Music",NotificationManager.IMPORTANCE_LOW)
                 notificationManager.createNotificationChannel(channel)
             }

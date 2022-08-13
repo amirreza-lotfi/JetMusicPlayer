@@ -43,57 +43,54 @@ class PlayingMusicFragment : JetFragment(){
             setTrackMainImage(it.albumArtPic)
         }
 
-        viewModel.trackList.value?.let {
-            val intent = Intent(requireContext(),PlayingMusicService::class.java)
-            intent.putParcelableArrayListExtra(EXTRA_TRACK_LIST,it as ArrayList)
-            activity?.startService(Intent(requireContext(),PlayingMusicService::class.java))
-        }
-
-        activity?.let{
-            val startPlayingMusicServiceIntent = Intent(it,PlayingMusicService::class.java)
-            it.startService(startPlayingMusicServiceIntent)
-            it.registerReceiver(object: BroadcastReceiver(){
-                override fun onReceive(_context: Context?, _intent: Intent?) {
-                    _context?.let{ context->
-                        _intent?.let {  intent->
-                            when(intent.extras?.getString("actionName") ?: ""){
-                                NotificationActions.NEXT.actionName->{
-                                    playingMusicService?.playNextTrack()
-                                }
-                                NotificationActions.PREVIOUS.actionName->{
-                                    playingMusicService?.playPreviousTrack()
-                                }
-                                NotificationActions.CLOSE.actionName->{
-                                    //todo
-                                }
-                                NotificationActions.PLAY_PAUSE.actionName->{
-                                    playingMusicService?.let { service->
-                                        if(service.isTrackPlaying())
-                                            service.pauseTrack()
-                                        else{
-                                            service.resumeTrack()
+        viewModel.trackList.value?.let { tracks->
+            activity?.let { activity->
+                val intent = Intent(requireContext(),PlayingMusicService::class.java)
+                intent.putParcelableArrayListExtra(EXTRA_TRACK_LIST,tracks as ArrayList)
+                activity.startService(intent)
+                activity.registerReceiver(object: BroadcastReceiver(){
+                    override fun onReceive(_context: Context?, _intent: Intent?) {
+                        _context?.let{ context->
+                            _intent?.let {  intent->
+                                when(intent.extras?.getString("actionName") ?: ""){
+                                    NotificationActions.NEXT.actionName->{
+                                        playingMusicService?.playNextTrack()
+                                    }
+                                    NotificationActions.PREVIOUS.actionName->{
+                                        playingMusicService?.playPreviousTrack()
+                                    }
+                                    NotificationActions.CLOSE.actionName->{
+                                        //todo
+                                    }
+                                    NotificationActions.PLAY_PAUSE.actionName->{
+                                        playingMusicService?.let { service->
+                                            if(service.isTrackPlaying())
+                                                service.pauseTrack()
+                                            else{
+                                                service.resumeTrack()
+                                            }
                                         }
                                     }
-                                }
 
-                                else -> {}
+                                    else -> {}
+                                }
                             }
                         }
                     }
-                }
-            }, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
-            it.bindService(startPlayingMusicServiceIntent,object : ServiceConnection{
-                override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-                    playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
-                }
+                }, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
+                activity.bindService(intent,object : ServiceConnection{
+                    override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+                        playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
+                    }
 
-                override fun onServiceDisconnected(p0: ComponentName?) {
-                    playingMusicService = null
-                }
+                    override fun onServiceDisconnected(p0: ComponentName?) {
+                        playingMusicService = null
+                    }
 
-            },BIND_AUTO_CREATE)
-
+                },BIND_AUTO_CREATE)
+            }
         }
+
     }
 
     private fun setTrackArtist(artist: String) {
@@ -117,5 +114,6 @@ class PlayingMusicFragment : JetFragment(){
             .placeholder(R.drawable.ic_album_24)
             .into(binding.trackMainImage)
     }
+
 
 }

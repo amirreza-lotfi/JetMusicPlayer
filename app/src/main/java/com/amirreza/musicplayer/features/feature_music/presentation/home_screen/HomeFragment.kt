@@ -110,7 +110,6 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
             val trackList = viewModel.putTrackToFirst(it.toMutableList(),item as Track)
 
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
-
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }
