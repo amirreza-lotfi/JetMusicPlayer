@@ -5,4 +5,8 @@
         <attr name="title" format="string"/>
         <attr name="countOfElement" format="string"/>
     </declare-styleable>
+    <declare-styleable name="JetSeekBar">
+        <attr name="maxValue" format="string" />
+        <attr name="currentValue" format="string" />
+    </declare-styleable>
 </resources>

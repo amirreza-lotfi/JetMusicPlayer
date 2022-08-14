@@ -9,18 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
+import com.amirreza.musicplayer.features.feature_playingMusic.OnSeekbarEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.general.NotificationActions
-import com.amirreza.musicplayer.general.NotificationConst
 import com.amirreza.musicplayer.general.NotificationConst.NOTIFICATION_ACTION_BROADCAST
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 
-class PlayingMusicFragment : JetFragment(){
+class PlayingMusicFragment : JetFragment() {
     lateinit var binding: FragmentPlayingMusicBinding
     private val viewModel: PlayingMusicViewModel by inject(){ parametersOf(this.arguments)}
     private var playingMusicService:PlayingMusicService? = null
@@ -91,7 +91,24 @@ class PlayingMusicFragment : JetFragment(){
             }
         }
 
+
+
+        val slider = binding.slider
+        slider.setCurrentValue(10000)
+        slider.setMaxValue(10000000)
+
+        slider.setOnSeekbarTouchedListener(object : OnSeekbarEvent{
+            override fun onCurrentPositionChanged(touchedPosition: Long) {
+                TODO("Not yet implemented")
+            }
+        })
+
     }
+
+
+
+
+
 
     private fun setTrackArtist(artist: String) {
         binding.songArtist.text = artist
@@ -115,5 +132,9 @@ class PlayingMusicFragment : JetFragment(){
             .into(binding.trackMainImage)
     }
 
+    override fun onDestroy() {
+        playingMusicService?.onDestroy()
+        super.onDestroy()
+    }
 
 }

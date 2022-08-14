@@ -10,7 +10,6 @@ import com.amirreza.musicplayer.features.feature_playingMusic.MusicPlayerNotific
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayerManager
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import org.koin.android.ext.android.inject
 
 class PlayingMusicService: Service() {
@@ -32,7 +31,7 @@ class PlayingMusicService: Service() {
             val tracks:ArrayList<Track> = _intent.getParcelableArrayListExtra(EXTRA_TRACK_LIST) ?: arrayListOf()
             playerManager = PlayerManager(tracks,exoPlayer)
             musicPlayerNotification = MusicPlayerNotification(this@PlayingMusicService,NotificationManagerCompat.from(this@PlayingMusicService))
-            musicPlayerNotification.createNotification(tracks[0])
+            startForeground(121221, musicPlayerNotification.createNotification(tracks[0]))
         }
         playTrack()
         return START_STICKY
@@ -41,6 +40,7 @@ class PlayingMusicService: Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground(true)
     }
 
 
@@ -49,10 +49,11 @@ class PlayingMusicService: Service() {
     }
 
 
-    fun playTrack(){
+    private fun playTrack(){
         playerManager.play()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
     }
+
     fun pauseTrack(){
         rememberedTrackSeekbarPosition = playerManager.getTrackPausedPosition()
         playerManager.pause()
