@@ -192,7 +192,7 @@
                 app:layout_constraintTop_toTopOf="@id/pausePlayBtn" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/playPreviousTrack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_previous"
@@ -202,18 +202,32 @@
                 app:layout_constraintStart_toEndOf="@+id/likeTrackBtn"
                 app:layout_constraintTop_toTopOf="@id/pausePlayBtn" />
 
-            <ImageView
+            <FrameLayout
                 android:id="@+id/pausePlayBtn"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/ic_pause"
-                app:layout_constraintEnd_toStartOf="@+id/nextTrack"
+                app:layout_constraintEnd_toStartOf="@+id/playNextTrack"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/playPreviousTrack"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@drawable/background_outline_oval_playing_fragment">
+                <FrameLayout
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_inline_oval_playing_fragment">
+                    <ImageView
+                        android:id="@+id/iconOfCenterActionPlayOrPause"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        tools:src = "@drawable/ic_play"/>
+                </FrameLayout>
+            </FrameLayout>
 
             <ImageView
-                android:id="@+id/nextTrack"
+                android:id="@+id/playNextTrack"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:rotation="180"
@@ -254,7 +268,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:id="@+id/wholeTimeOfTrack"
+                android:id="@+id/durationOfTrack"
                 app:layout_constraintTop_toBottomOf="@id/slider"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text ="4:16:09"/>

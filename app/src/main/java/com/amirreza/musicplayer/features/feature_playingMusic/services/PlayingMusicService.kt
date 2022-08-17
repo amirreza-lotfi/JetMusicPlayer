@@ -55,7 +55,7 @@ class PlayingMusicService: Service() {
     }
 
     fun pauseTrack(){
-        rememberedTrackSeekbarPosition = playerManager.getTrackPausedPosition()
+        rememberedTrackSeekbarPosition = playerManager.getTrackCurrentPosition()
         playerManager.pause()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
     }
@@ -67,19 +67,36 @@ class PlayingMusicService: Service() {
             musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
         }
     }
-    fun playPreviousTrack(){
+    fun playPreviousTrack(): Track {
         playerManager.playPrevious()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        return playerManager.getCurrentTrack()
     }
-    fun playNextTrack(){
+    fun playNextTrack(): Track {
         playerManager.playNextTrack()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        return playerManager.getCurrentTrack()
     }
 
     fun isTrackPlaying():Boolean{
         return playerManager.isAnyTrackPlaying()
     }
 
+    fun getCurrentPositionOfTrack():Long{
+        return playerManager.getTrackCurrentPosition()
+    }
+
+    fun seekTrackTo(pos:Long){
+        rememberedTrackSeekbarPosition = pos
+        return playerManager.seekTo(pos)
+    }
+
+    fun hasNextTrack():Boolean{
+        return playerManager.hasNextTrack()
+    }
+    fun hasPreviousTrack():Boolean{
+        return playerManager.hasPreviousTrack()
+    }
 
     inner class PlayingMusicBinder: Binder(){
         fun getService(): PlayingMusicService = this@PlayingMusicService

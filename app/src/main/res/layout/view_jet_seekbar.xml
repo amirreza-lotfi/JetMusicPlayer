@@ -20,7 +20,6 @@
         android:id="@+id/slider_curser"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginStart="0dp"
         android:background="@drawable/ic_slider_curser"
         android:layout_gravity="start"/>
 </FrameLayout>

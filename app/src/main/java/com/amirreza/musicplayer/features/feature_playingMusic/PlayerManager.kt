@@ -58,10 +58,21 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
     }
 
     fun getCurrentTrack():Track = tracks[currentTrackIndex]
-    fun getTrackPausedPosition():Long{
+
+    fun getTrackCurrentPosition():Long{
         if(exoPlayer.currentPosition<10)
             return exoPlayer.currentPosition
         return exoPlayer.currentPosition-3
+    }
+
+    fun hasNextTrack():Boolean{
+        return exoPlayer.hasNextMediaItem()
+    }
+    fun hasPreviousTrack():Boolean{
+        return exoPlayer.hasPreviousMediaItem()
+    }
+    fun seekTo(pos:Long){
+        exoPlayer.seekTo(pos)
     }
 
 }
