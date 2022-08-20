@@ -55,7 +55,9 @@ class JetSeekBar(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     }
 
     fun updateSeekbarByNewValue(newValue: Long){
-        val durationToWidth = (newValue.toDouble()/maxValue)*widthOfView
+        var durationToWidth = (newValue.toDouble()/maxValue)*widthOfView
+        if(newValue >= maxValue)
+            durationToWidth = 0.0
         onChangedCurrentValue(durationToWidth.toInt())
     }
 
@@ -87,5 +89,4 @@ fun convertDpToPixel(dp: Float, context: Context?): Float {
 
 interface OnSeekbarEvent {
     fun onCurrentPositionChanged(touchedPosition: Long)
-    fun onTrackFinished()
 }

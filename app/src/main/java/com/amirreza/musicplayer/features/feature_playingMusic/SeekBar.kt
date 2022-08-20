@@ -6,6 +6,10 @@ class SeekBar(private val  jetSeekBar: JetSeekBar,max:Long, current:Long){
         jetSeekBar.setOnSeekbarTouchedListener(onSeekbarEvent)
     }
 
+    fun updateSeekbarByNewValue(it:Long){
+        jetSeekBar.updateSeekbarByNewValue(it)
+    }
+
     init {
         val width = jetSeekBar.measuredWidth
         jetSeekBar.setValues(max,current,width)

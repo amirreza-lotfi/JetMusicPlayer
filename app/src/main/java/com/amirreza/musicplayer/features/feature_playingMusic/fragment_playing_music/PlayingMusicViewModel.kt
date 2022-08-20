@@ -64,15 +64,17 @@ class PlayingMusicViewModel(
         when (event) {
             is PlayingFragmentEvent.SetIsTrackPlayingLiveData -> {
                 _isTrackPlaying.value = event.isTrackPlaying
-            }
-            is PlayingFragmentEvent.OnSeekBarTouched -> {
-                if(isTrackPlaying.value == true){
-                    startTrackPosition(event.position)
+                if(event.isTrackPlaying){
+                    startTrackPosition(event.currentPositionOfTrack)
                 }else{
                     durationTimerJob?.cancel()
-                    _trackPosition.value = event.position
+                    _trackPosition.value = event.currentPositionOfTrack
                 }
             }
+            is PlayingFragmentEvent.OnSeekBarTouched -> {
+                _trackPosition.value = event.position
+            }
+
             is PlayingFragmentEvent.OnTrackFinished->{
                 startTrackPosition(0)
                 _isTrackPlaying.value = true
@@ -81,9 +83,7 @@ class PlayingMusicViewModel(
             is PlayingFragmentEvent.PausePlayButtonClicked->{
                 if(_isTrackPlaying.value!!){
                     stopTimer()
-                    _isTrackPlaying.value = false
                 }else{
-                    _isTrackPlaying.value = true
                     startTrackPosition()
                 }
             }

@@ -9,16 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
 import com.amirreza.musicplayer.features.feature_playingMusic.OnSeekbarEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.SeekBar
+import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerListener
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.general.NotificationActions
 import com.amirreza.musicplayer.general.NotificationConst.NOTIFICATION_ACTION_BROADCAST
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_playing_music.*
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import kotlin.collections.ArrayList
@@ -79,37 +82,19 @@ class PlayingMusicFragment : JetFragment() {
                     override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
                         playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
 
-                        viewModel.onUiEvent(PlayingFragmentEvent.SetIsTrackPlayingLiveData(true))
                         viewModel.startTrackPosition()
 
                         playingMusicService?.let{ playingMusicService ->
 
-                            val slider = binding.slider
-
-                            slider.post {
-                                val seekbar = SeekBar(binding.slider,viewModel.currentTrack.value?.duration ?:0,playingMusicService.getCurrentPositionOfTrack() ?: 0L)
-
-                                seekbar.setOnSeekbarTouchedListener(object : OnSeekbarEvent {
-                                    override fun onCurrentPositionChanged(touchedPosition: Long) {
-                                        playingMusicService.seekTrackTo(touchedPosition)
-                                        viewModel.onUiEvent(PlayingFragmentEvent.OnSeekBarTouched(touchedPosition))
-                                    }
-
-                                    override fun onTrackFinished() {
-                                        slider.updateSeekbarByNewValue(0)
-                                        viewModel.onUiEvent(PlayingFragmentEvent.OnTrackFinished(playingMusicService.playNextTrack()))
-                                    }
-                                })
-
-
-                                viewModel.trackPosition.observe(viewLifecycleOwner){
-                                    slider.updateSeekbarByNewValue(it)
-                                    setCurrentPositionOfTrackText(it.toLong())
-                                }
-                            }
+                            val seekbar = SeekBar(binding.slider,viewModel.currentTrack.value?.duration ?:0,playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
 
                             binding.pausePlayBtn.setOnClickListener {
                                 viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
+                                if(viewModel.isTrackPlaying.value == true){
+                                    playingMusicService.pauseTrack()
+                                }else{
+                                    playingMusicService.resumeTrack()
+                                }
                             }
 
                             binding.playNextTrack.setOnClickListener {
@@ -121,6 +106,20 @@ class PlayingMusicFragment : JetFragment() {
                                 val newTrack = playingMusicService.playPreviousTrack()
                                 viewModel.onUiEvent(PlayingFragmentEvent.OnPreviousTrackClicked(newTrack))
                             }
+
+                            playingMusicService.onPlayingTrackListener(object : PlayerListener{
+                                override fun onFinishTrack(nextTrack: Track) {
+                                    viewModel.onUiEvent(PlayingFragmentEvent.OnTrackFinished(nextTrack))
+                                }
+
+                                override fun onMusicPlayerFinishPlayingAllMedia() {
+                                    seekbar.updateSeekbarByNewValue(0L)
+                                }
+
+                                override fun isTrackPlaying(boolean: Boolean) {
+                                    viewModel.onUiEvent(PlayingFragmentEvent.SetIsTrackPlayingLiveData(boolean,playingMusicService.getCurrentPositionOfTrack()))
+                                }
+                            })
                         }
 
                         binding.playNextTrack.visibility = if(!playingMusicService!!.hasNextTrack()) View.INVISIBLE else View.VISIBLE
@@ -137,37 +136,45 @@ class PlayingMusicFragment : JetFragment() {
         }
 
         viewModel.currentTrack.observe(viewLifecycleOwner) { current ->
+            playingMusicService?.let { playingMusicService ->
+                binding.playNextTrack.visibility = if(!playingMusicService.hasNextTrack()) View.INVISIBLE else View.VISIBLE
+                binding.playPreviousTrack.visibility = if(!playingMusicService.hasPreviousTrack()) View.INVISIBLE else View.VISIBLE
+            }
+
+            binding.slider.post {
+                slider.post {
+                    val seekbar = SeekBar(binding.slider,viewModel.currentTrack.value?.duration ?:0,playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
+
+                    seekbar.setOnSeekbarTouchedListener(object : OnSeekbarEvent {
+                        override fun onCurrentPositionChanged(touchedPosition: Long) {
+                            playingMusicService?.seekTrackTo(touchedPosition)
+                            viewModel.onUiEvent(PlayingFragmentEvent.OnSeekBarTouched(touchedPosition))
+                        }
+                    })
+
+
+                    viewModel.trackPosition.observe(viewLifecycleOwner){
+                        seekbar.updateSeekbarByNewValue(it)
+                        setCurrentPositionOfTrackText(it.toLong())
+                    }
+                }
+            }
+
             setTrackName(current.trackName)
             setTrackArtist(current.artist)
             setTrackBackgroundImage(current.albumArtPic)
             setTrackMainImage(current.albumArtPic)
             setCurrentPositionOfTrackText(playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
             setTrackDurationText(current.duration)
-
-            playingMusicService?.let { playingMusicService ->
-                binding.playNextTrack.visibility = if(!playingMusicService.hasNextTrack()) View.INVISIBLE else View.VISIBLE
-                binding.playPreviousTrack.visibility = if(!playingMusicService.hasPreviousTrack()) View.INVISIBLE else View.VISIBLE
-            }
-
         }
 
         viewModel.isTrackPlaying.observe(viewLifecycleOwner){ isPlaying->
             setUpPlayingOrPauseButtonImageResource(isPlaying)
-            playingMusicService?.let { playingService->
-                if(isPlaying){
-                    playingService.resumeTrack()
-                }else{
-                    playingService.pauseTrack()
-                }
-            }
         }
 
-        viewModel.trackPosition.observe(viewLifecycleOwner){
-
-        }
     }
 
-    fun setUpPlayingOrPauseButtonImageResource(isTrackPlaying:Boolean){
+    private fun setUpPlayingOrPauseButtonImageResource(isTrackPlaying:Boolean){
         if(isTrackPlaying){
             binding.iconOfCenterActionPlayOrPause.setImageResource(R.drawable.ic_baseline_pause_24)
         }else{

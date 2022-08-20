@@ -2,22 +2,26 @@ package com.amirreza.musicplayer.features.feature_playingMusic.services
 
 import android.app.Service
 import android.content.Intent
+import android.media.session.MediaSession
 import android.os.Binder
 import android.os.IBinder
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationManagerCompat
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.MusicPlayerNotification
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayerManager
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import org.koin.android.ext.android.inject
 
+
 class PlayingMusicService: Service() {
-    lateinit var playerManager: PlayerManager
-    lateinit var musicPlayerNotification:MusicPlayerNotification
+    private lateinit var playerManager: PlayerManager
+    private lateinit var musicPlayerNotification:MusicPlayerNotification
     private val exoPlayer by inject<ExoPlayer>()
     private var rememberedTrackSeekbarPosition = 0L
-
+    private var mediaSessionConnector:MediaSessionConnector  ? = null
     override fun onBind(p0: Intent?): IBinder {
         return PlayingMusicBinder()
     }
@@ -53,7 +57,6 @@ class PlayingMusicService: Service() {
         playerManager.play()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
     }
-
     fun pauseTrack(){
         rememberedTrackSeekbarPosition = playerManager.getTrackCurrentPosition()
         playerManager.pause()
@@ -77,28 +80,33 @@ class PlayingMusicService: Service() {
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
         return playerManager.getCurrentTrack()
     }
-
     fun isTrackPlaying():Boolean{
         return playerManager.isAnyTrackPlaying()
     }
-
     fun getCurrentPositionOfTrack():Long{
         return playerManager.getTrackCurrentPosition()
     }
-
     fun seekTrackTo(pos:Long){
         rememberedTrackSeekbarPosition = pos
         return playerManager.seekTo(pos)
     }
-
     fun hasNextTrack():Boolean{
         return playerManager.hasNextTrack()
     }
     fun hasPreviousTrack():Boolean{
         return playerManager.hasPreviousTrack()
     }
+    fun onPlayingTrackListener(playerListener: PlayerListener){
+        playerManager.setListener(playerListener)
+    }
 
     inner class PlayingMusicBinder: Binder(){
         fun getService(): PlayingMusicService = this@PlayingMusicService
     }
+}
+
+interface PlayerListener{
+    fun onFinishTrack(nextTrack:Track)
+    fun onMusicPlayerFinishPlayingAllMedia()
+    fun isTrackPlaying(boolean: Boolean)
 }

@@ -1,14 +1,14 @@
 package com.amirreza.musicplayer.features.feature_playingMusic
 
+import android.util.Log
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
+import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerListener
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-
-
+import com.google.android.exoplayer2.Player
 
 
 class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: ExoPlayer) {
-    private var currentTrackIndex = 0
 
     init {
         val mediaItems = getMediaItems()
@@ -32,14 +32,12 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
         exoPlayer.prepare()
         exoPlayer.play()
     }
-
     fun pause(){
         exoPlayer.pause()
     }
     fun isAnyTrackPlaying(): Boolean {
         return exoPlayer.isPlaying
     }
-
     fun resumeTrack(position:Long){
         exoPlayer.seekTo(position)
         exoPlayer.play()
@@ -48,23 +46,18 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
         if(exoPlayer.hasNextMediaItem()) {
             exoPlayer.seekToNext()
         }
-        currentTrackIndex++
     }
     fun playPrevious(){
         if(exoPlayer.hasPreviousMediaItem()) {
             exoPlayer.seekToPrevious()
         }
-        currentTrackIndex--
     }
-
-    fun getCurrentTrack():Track = tracks[currentTrackIndex]
-
+    fun getCurrentTrack():Track = tracks[exoPlayer.currentMediaItemIndex]
     fun getTrackCurrentPosition():Long{
         if(exoPlayer.currentPosition<10)
             return exoPlayer.currentPosition
         return exoPlayer.currentPosition-3
     }
-
     fun hasNextTrack():Boolean{
         return exoPlayer.hasNextMediaItem()
     }
@@ -73,6 +66,28 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
     }
     fun seekTo(pos:Long){
         exoPlayer.seekTo(pos)
+    }
+
+    fun setListener(playerListener: PlayerListener){
+        exoPlayer.addListener(object : Player.Listener{
+            override fun onPositionDiscontinuity(
+                oldPosition: Player.PositionInfo,
+                newPosition: Player.PositionInfo,
+                reason: Int
+            ) {
+                super.onPositionDiscontinuity(oldPosition, newPosition, reason)
+                when (reason) {
+                    Player.DISCONTINUITY_REASON_AUTO_TRANSITION -> {
+                        playerListener.onMusicPlayerFinishPlayingAllMedia()
+                        playerListener.onFinishTrack(getCurrentTrack())
+                    }
+                }
+            }
+            override fun onIsPlayingChanged(isPlaying: Boolean) {
+                playerListener.isTrackPlaying(isPlaying)
+            }
+
+        })
     }
 
 }
