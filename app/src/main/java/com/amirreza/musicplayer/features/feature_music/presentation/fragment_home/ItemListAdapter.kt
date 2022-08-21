@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.home_screen
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.amirreza.musicplayer.databinding.ItemTrackBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.bumptech.glide.Glide
 
 

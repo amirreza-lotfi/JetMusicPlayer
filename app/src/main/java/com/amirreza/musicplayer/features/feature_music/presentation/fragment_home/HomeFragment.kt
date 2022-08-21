@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.home_screen
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_home
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -16,8 +16,9 @@ import com.amirreza.musicplayer.general.RESPONSE_OF_PERMISSION_REQUEST
 import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.databinding.FragmentHomeBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
+import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,7 +26,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : JetFragment(),OnItemClickEvent{
     lateinit var binding: FragmentHomeBinding
 
-    private val viewModel: MusicViewModel by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,6 +110,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
             val bundle = Bundle()
             val trackList = viewModel.putTrackToFirst(it.toMutableList(),item as Track)
 
+            bundle.putInt("2",trackList.indexOf(item))
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }

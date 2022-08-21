@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.tracks_screen
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks
 
 import android.os.Bundle
 import androidx.lifecycle.LiveData

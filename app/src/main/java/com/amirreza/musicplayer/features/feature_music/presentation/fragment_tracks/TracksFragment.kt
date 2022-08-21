@@ -1,7 +1,6 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.tracks_screen
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ViewItemListBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.ItemListAdapter
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.ItemListAdapter
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import org.koin.android.ext.android.inject

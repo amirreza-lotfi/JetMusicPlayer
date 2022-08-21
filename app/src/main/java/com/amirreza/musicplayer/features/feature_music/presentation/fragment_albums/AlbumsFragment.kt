@@ -1,17 +1,17 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.feature_albums
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_albums
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ViewItemListBinding
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.ItemListAdapter
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.OnItemClickEvent
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.ItemListAdapter
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
+import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -43,7 +43,10 @@ class AlbumsFragment : JetFragment(),OnItemClickEvent {
     }
 
     override fun <T> click(item: T) {
-        TODO("Not yet implemented")
+        viewModel.albumList.value?.let {
+            val bundle = Bundle()
+
+        }
     }
 
 }

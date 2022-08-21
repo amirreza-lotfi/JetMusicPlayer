@@ -8,11 +8,12 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 
 
-class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: ExoPlayer) {
+class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: ExoPlayer, clickedMediaItemIndex:Int) {
 
     init {
         val mediaItems = getMediaItems()
         exoPlayer.setMediaItems(mediaItems)
+        exoPlayer.seekTo(clickedMediaItemIndex,0)
     }
 
     private fun getMediaItems(): List<MediaItem> {

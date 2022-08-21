@@ -2,93 +2,75 @@ package com.amirreza.musicplayer.features.feature_playingMusic
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.FrameLayout
 import com.amirreza.musicplayer.R
-import kotlin.math.min
-import kotlin.math.roundToInt
+import com.amirreza.musicplayer.general.convertDpToPixel
 
 @SuppressLint("ClickableViewAccessibility")
 class JetSeekBar(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
-    private var view: View
-    private var sliderFill: FrameLayout
+    private var slider: View
+    private var fillAreaView: FrameLayout
     private var cursor: FrameLayout
 
-     var maxValue = 0.0
-    var currentValue = 0.0
+    var durationOfTrack = 0.0
+    var currentPositionOfTrack = 0.0
     private var widthOfView = 0
 
-    var cursorWidth=0
-    var cursorHeight=0
+    var roundedCursorWidth=0
+    var roundedCursorHeight=0
 
 
     init {
-        view = inflate(context, R.layout.view_jet_seekbar, this)
-        sliderFill = view.findViewById(R.id.slider_fill)
-        cursor = view.findViewById(R.id.slider_curser)
+        slider = inflate(context, R.layout.view_jet_seekbar, this)
+        fillAreaView = slider.findViewById(R.id.slider_fill)
+        cursor = slider.findViewById(R.id.slider_curser)
     }
 
     fun setValues(max:Long, current:Long, width: Int){
-        maxValue = max.toDouble()
-        currentValue = current.toDouble()
-        widthOfView = width.toInt()
+        durationOfTrack = max.toDouble()
+        currentPositionOfTrack = current.toDouble()
+        widthOfView = width
 
-        cursorWidth = convertDpToPixel(12f,context!!).toInt()
-        cursorHeight = convertDpToPixel(12f,context!!).toInt()
+        roundedCursorWidth = convertDpToPixel(12f,context!!).toInt()
+        roundedCursorHeight = convertDpToPixel(12f,context!!).toInt()
 
-        updateSeekbarByNewValue(current)
+        updateSeekbarByNewTrackPosition(current)
     }
 
-    private fun onChangedCurrentValue(newWidth: Int) {
-        if (maxValue != 0.0) {
-            val layoutParams = sliderFill.layoutParams
+    private fun redrawFillAreaAndCursorInView(newWidth: Int) {
+        if (durationOfTrack != 0.0) {
+            val layoutParams = fillAreaView.layoutParams
             layoutParams.width = newWidth
-            sliderFill.layoutParams = layoutParams
+            fillAreaView.layoutParams = layoutParams
 
 
-            val layoutParamsCursor = LayoutParams(cursorWidth,cursorHeight)
+            val layoutParamsCursor = LayoutParams(roundedCursorWidth,roundedCursorHeight)
             layoutParamsCursor.marginStart = newWidth
             cursor.layoutParams = layoutParamsCursor
         }
     }
 
-    fun updateSeekbarByNewValue(newValue: Long){
-        currentValue = newValue.toDouble()
-        var durationToWidth = (newValue.toDouble()/maxValue)*widthOfView
-        if(newValue >= maxValue)
+    fun updateSeekbarByNewTrackPosition(newValue: Long){
+        currentPositionOfTrack = newValue.toDouble()
+        var durationToWidth = (newValue.toDouble()/durationOfTrack)*widthOfView
+        if(newValue >= durationOfTrack)
             durationToWidth = 0.0
-        onChangedCurrentValue(durationToWidth.toInt())
+        redrawFillAreaAndCursorInView(durationToWidth.toInt())
     }
 
     fun setOnSeekbarTouchedListener(onSeekbarEvent: OnSeekbarEvent) {
-        view.setOnTouchListener { view, motionEvent ->
+        slider.setOnTouchListener { view, motionEvent ->
             val touchedWidth = motionEvent.x
 
-            onChangedCurrentValue(touchedWidth.toInt())
+            redrawFillAreaAndCursorInView(touchedWidth.toInt())
 
-            val currentValueChanged = (touchedWidth / widthOfView) * (maxValue)
+            val currentValueChanged = (touchedWidth / widthOfView) * (durationOfTrack)
             onSeekbarEvent.onCurrentPositionChanged(currentValueChanged.toLong())
 
             true
         }
     }
 
-}
-
-fun convertDpToPixel(dp: Float, context: Context?): Float {
-    return if (context != null) {
-        val resources = context.resources
-        val metrics = resources.displayMetrics
-        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    } else {
-        val metrics = Resources.getSystem().displayMetrics
-        dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-    }
-}
-
-interface OnSeekbarEvent {
-    fun onCurrentPositionChanged(touchedPosition: Long)
 }

@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -19,31 +20,31 @@ import com.amirreza.musicplayer.general.NotificationConst
 
 
 class MusicPlayerNotification(
-    private val context:Context,
+    private val context: Context,
     private val notificationManager: NotificationManagerCompat
 ) {
 
-    private var notificationBuilder:NotificationCompat.Builder?= null
+    private var notificationBuilder: NotificationCompat.Builder? = null
 
-    fun createNotification(track: Track):Notification{
+    fun createNotification(track: Track): Notification {
         createNotificationChannel()
         notificationBuilder = NotificationCompat.Builder(context, NotificationConst.CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_track_24)
-                .setLargeIcon(MusicHelper.getBitmapOfTrack(context, track))
-                .setContentTitle(track.trackName)
-                .setContentText(track.artist)
-                .addAction(notificationAction(NotificationActions.PREVIOUS))
-                .addAction(notificationAction(NotificationActions.PLAY_PAUSE))
-                .addAction(notificationAction(NotificationActions.NEXT))
-                .addAction(notificationAction(NotificationActions.CLOSE))
-            notificationBuilder!!.setStyle(
-                androidx.media.app.NotificationCompat.MediaStyle()
-                    .setShowActionsInCompactView(0, 1, 2)
-            )
+            .setSmallIcon(R.drawable.ic_track_24)
+            .setLargeIcon(MusicHelper.getBitmapOfTrack(context, track))
+            .setContentTitle(track.trackName)
+            .setContentText(track.artist)
+            .addAction(notificationAction(NotificationActions.PREVIOUS))
+            .addAction(notificationAction(NotificationActions.PLAY_PAUSE))
+            .addAction(notificationAction(NotificationActions.NEXT))
+            .addAction(notificationAction(NotificationActions.CLOSE))
+        notificationBuilder!!.setStyle(
+            androidx.media.app.NotificationCompat.MediaStyle()
+                .setShowActionsInCompactView(0, 1, 2)
+        )
         return notificationBuilder!!.build()
     }
 
-    fun updateNotification(newTrack:Track,isTrackPlaying:Boolean){
+    fun updateNotification(newTrack: Track, isTrackPlaying: Boolean) {
         notificationBuilder?.let {
             val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
             it.setOngoing(isTrackPlaying)
@@ -51,44 +52,57 @@ class MusicPlayerNotification(
                 .setContentTitle(newTrack.trackName)
                 .setContentText(newTrack.artist)
                 .setSubText(newTrack.albumName)
-            NotificationManagerCompat.from(context).notify(121221,it.build())
+            NotificationManagerCompat.from(context).notify(121221, it.build())
         }
     }
 
     @RequiresApi(26)
-    private fun createNotificationChannel(){
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = notificationManager.getNotificationChannel(NotificationConst.CHANNEL_ID)
-            if (notificationChannel==null){
-                val channel = NotificationChannel(NotificationConst.CHANNEL_ID,"Jet Music",NotificationManager.IMPORTANCE_LOW)
+            val notificationChannel =
+                notificationManager.getNotificationChannel(NotificationConst.CHANNEL_ID)
+            if (notificationChannel == null) {
+                val channel = NotificationChannel(
+                    NotificationConst.CHANNEL_ID,
+                    "Jet Music",
+                    NotificationManager.IMPORTANCE_LOW
+                )
                 notificationManager.createNotificationChannel(channel)
             }
         }
     }
 
-    private fun notificationAction(action:NotificationActions): NotificationCompat.Action {
-        val icon = when(action){
-            NotificationActions.PLAY_PAUSE ->{
+    private fun notificationAction(action: NotificationActions): NotificationCompat.Action {
+        val icon = when (action) {
+            NotificationActions.PLAY_PAUSE -> {
                 R.drawable.ic_play
             }
 
-            NotificationActions.NEXT ->{
-                R.drawable.ic_previous
+            NotificationActions.NEXT -> {
+                R.drawable.ic_next_media
             }
-            NotificationActions.PREVIOUS->{
-                R.drawable.ic_previous
+            NotificationActions.PREVIOUS -> {
+                R.drawable.ic_previous_media
             }
-            NotificationActions.CLOSE->{
+            NotificationActions.CLOSE -> {
                 R.drawable.ic_close
             }
         }
-        return NotificationCompat.Action.Builder(icon,"action",createPendingIntent(action.actionName)).build()
+        return NotificationCompat.Action.Builder(
+            icon,
+            action.actionName,
+            createPendingIntent(action.actionName)
+        ).build()
     }
 
-    private fun createPendingIntent(actionName:String): PendingIntent {
+    private fun createPendingIntent(actionName: String): PendingIntent {
         return PendingIntent
-            .getBroadcast(context,NotificationConst.MUSIC_PLAYER_NOTIFICATION_BROADCAST_REQUEST_ID,
-                Intent(context, NotificationActionBroadcast::class.java).setAction(actionName),PendingIntent.FLAG_UPDATE_CURRENT)
+            .getBroadcast(
+                context,
+                NotificationConst.MUSIC_PLAYER_NOTIFICATION_BROADCAST_REQUEST_ID,
+                Intent(context, NotificationActionBroadcast::class.java).setAction(actionName),
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
     }
 }
 

@@ -6,7 +6,7 @@
     android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?colorPrimaryVariant"
-    tools:context=".features.feature_music.presentation.home_screen.HomeFragment">
+    tools:context=".features.feature_music.presentation.fragment_home.HomeFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +21,7 @@
             android:layout_marginBottom="32dp">
 
 
-            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+            <com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
                 android:id="@+id/tracks_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 app:title="Tracks"
                 app:countOfElement="0" />
 
-            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+            <com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
                 android:id="@+id/artist_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 app:title="Artists"
                 tools:countOfElement="123" />
 
-            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+            <com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
                 android:id="@+id/playList_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 app:title="PlayList"
                 tools:countOfElement="123" />
 
-            <com.amirreza.musicplayer.features.feature_music.presentation.home_screen.components.HomeActionItem
+            <com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
                 android:id="@+id/album_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:padding="16dp"
     android:background="?colorPrimaryVariant"
     android:layout_height="match_parent"
-    tools:context=".features.feature_music.presentation.tracks_screen.TracksFragment">
+    tools:context=".features.feature_music.presentation.fragment_tracks.TracksFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

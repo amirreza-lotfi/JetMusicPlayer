@@ -10,6 +10,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.MusicPlayerNotification
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayerManager
+import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
@@ -33,7 +34,8 @@ class PlayingMusicService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let { _intent->
             val tracks:ArrayList<Track> = _intent.getParcelableArrayListExtra(EXTRA_TRACK_LIST) ?: arrayListOf()
-            playerManager = PlayerManager(tracks,exoPlayer)
+            val indexOfCurrentTrack = _intent.getIntExtra(EXTRA_TRACK_CLICKED_POSITION,0)
+            playerManager = PlayerManager(tracks,exoPlayer,indexOfCurrentTrack)
             musicPlayerNotification = MusicPlayerNotification(this@PlayingMusicService,NotificationManagerCompat.from(this@PlayingMusicService))
             startForeground(121221, musicPlayerNotification.createNotification(tracks[0]))
         }

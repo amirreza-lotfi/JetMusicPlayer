@@ -4,10 +4,10 @@ import android.app.Application
 import android.os.Bundle
 import com.amirreza.musicplayer.features.feature_music.data.MusicRepositoryImpl
 import com.amirreza.musicplayer.features.feature_music.domain.repository.MusicRepository
-import com.amirreza.musicplayer.features.feature_music.presentation.feature_albums.AlbumsViewModel
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_albums.AlbumsViewModel
 import com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music.PlayingMusicViewModel
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.MusicViewModel
-import com.amirreza.musicplayer.features.feature_music.presentation.tracks_screen.TrackViewModel
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.HomeViewModel
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks.TrackViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,7 +30,7 @@ class JetApplication:Application() {
 
         val modulesViewModel = module {
             viewModel {
-                MusicViewModel(get())
+                HomeViewModel(get())
             }
             viewModel { (bundle:Bundle)->
                 PlayingMusicViewModel(bundle)

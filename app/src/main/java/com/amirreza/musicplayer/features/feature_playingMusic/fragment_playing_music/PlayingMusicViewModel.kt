@@ -44,8 +44,8 @@ class PlayingMusicViewModel(
         _currentTrack.value = _trackList.value!![0]
     }
 
-    fun startTrackPosition(initValue: Long = trackPosition.value!!) {
-        _trackPosition.postValue(initValue)
+    fun startTimer(trackPos: Long = trackPosition.value!!) {
+        _trackPosition.postValue(trackPos)
 
         durationTimerJob?.cancel()
         durationTimerJob = viewModelScope.launch(Dispatchers.IO) {
@@ -64,9 +64,9 @@ class PlayingMusicViewModel(
         when (event) {
             is PlayingFragmentEvent.SetIsTrackPlayingLiveData -> {
                 _isTrackPlaying.value = event.isTrackPlaying
-                if(event.isTrackPlaying){
-                    startTrackPosition(event.currentPositionOfTrack)
-                }else{
+                if (event.isTrackPlaying) {
+                    startTimer(event.currentPositionOfTrack)
+                } else {
                     durationTimerJob?.cancel()
                     _trackPosition.value = event.currentPositionOfTrack
                 }
@@ -75,24 +75,25 @@ class PlayingMusicViewModel(
                 _trackPosition.value = event.position
             }
 
-            is PlayingFragmentEvent.OnTrackFinished->{
-                startTrackPosition(0)
+            is PlayingFragmentEvent.OnTrackFinished -> {
+                startTimer(0)
                 _isTrackPlaying.value = true
                 _currentTrack.value = event.nextTrack
+
             }
-            is PlayingFragmentEvent.PausePlayButtonClicked->{
-                if(_isTrackPlaying.value!!){
+            is PlayingFragmentEvent.PausePlayButtonClicked -> {
+                if (_isTrackPlaying.value!!) {
                     stopTimer()
-                }else{
-                    startTrackPosition()
+                } else {
+                    startTimer()
                 }
             }
-            is PlayingFragmentEvent.OnNextTrackClicked->{
-                startTrackPosition(0)
+            is PlayingFragmentEvent.OnNextTrackClicked -> {
+                startTimer(0)
                 _currentTrack.value = event.nextTrack
             }
-            is PlayingFragmentEvent.OnPreviousTrackClicked->{
-                startTrackPosition(0)
+            is PlayingFragmentEvent.OnPreviousTrackClicked -> {
+                startTimer(0)
                 _currentTrack.value = event.previousTrack
             }
         }

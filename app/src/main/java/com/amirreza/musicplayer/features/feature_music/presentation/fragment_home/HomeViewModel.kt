@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_music.presentation.home_screen
+package com.amirreza.musicplayer.features.feature_music.presentation.fragment_home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +8,9 @@ import com.amirreza.musicplayer.features.feature_music.domain.entities.Artist
 import com.amirreza.musicplayer.features.feature_music.domain.entities.PlayList
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.domain.repository.MusicRepository
-import com.amirreza.musicplayer.features.feature_music.presentation.home_screen.util.HomeEvent
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.HomeEvent
 
-class MusicViewModel(private val musicRepository: MusicRepository):JetViewModel() {
+class HomeViewModel(private val musicRepository: MusicRepository):JetViewModel() {
     private val _tracksLiveData = MutableLiveData(musicRepository.getTracks())
     val tracksLiveData: LiveData<List<Track>> = _tracksLiveData
 
@@ -45,11 +45,6 @@ class MusicViewModel(private val musicRepository: MusicRepository):JetViewModel(
     }
 
     fun putTrackToFirst(trackList: MutableList<Track>, track: Track): MutableList<Track> {
-        val indexOfTrack = trackList.indexOf(track)
-
-        val ttt = trackList[0]
-        trackList[0] = trackList[indexOfTrack]
-        trackList[indexOfTrack] = ttt
         return trackList
     }
 }
