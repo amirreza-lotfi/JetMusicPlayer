@@ -17,7 +17,7 @@ class JetSeekBar(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     private var sliderFill: FrameLayout
     private var cursor: FrameLayout
 
-    private var maxValue = 0.0
+     var maxValue = 0.0
     var currentValue = 0.0
     private var widthOfView = 0
 
@@ -39,10 +39,11 @@ class JetSeekBar(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
         cursorWidth = convertDpToPixel(12f,context!!).toInt()
         cursorHeight = convertDpToPixel(12f,context!!).toInt()
 
+        updateSeekbarByNewValue(current)
     }
 
     private fun onChangedCurrentValue(newWidth: Int) {
-        if (newWidth != 0 && maxValue != 0.0) {
+        if (maxValue != 0.0) {
             val layoutParams = sliderFill.layoutParams
             layoutParams.width = newWidth
             sliderFill.layoutParams = layoutParams
@@ -55,6 +56,7 @@ class JetSeekBar(context: Context, attrs: AttributeSet?) : FrameLayout(context, 
     }
 
     fun updateSeekbarByNewValue(newValue: Long){
+        currentValue = newValue.toDouble()
         var durationToWidth = (newValue.toDouble()/maxValue)*widthOfView
         if(newValue >= maxValue)
             durationToWidth = 0.0

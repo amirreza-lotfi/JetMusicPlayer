@@ -88,12 +88,12 @@ class PlayingMusicViewModel(
                 }
             }
             is PlayingFragmentEvent.OnNextTrackClicked->{
-                _currentTrack.value = event.nextTrack
                 startTrackPosition(0)
+                _currentTrack.value = event.nextTrack
             }
             is PlayingFragmentEvent.OnPreviousTrackClicked->{
-                _currentTrack.value = event.previousTrack
                 startTrackPosition(0)
+                _currentTrack.value = event.previousTrack
             }
         }
     }

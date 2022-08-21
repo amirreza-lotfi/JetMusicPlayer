@@ -45,6 +45,7 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
     fun playNextTrack(){
         if(exoPlayer.hasNextMediaItem()) {
             exoPlayer.seekToNext()
+            exoPlayer.seekTo(0)
         }
     }
     fun playPrevious(){
