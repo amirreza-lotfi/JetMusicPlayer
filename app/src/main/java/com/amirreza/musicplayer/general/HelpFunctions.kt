@@ -7,6 +7,8 @@ import android.graphics.Insets
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 fun getScreenWidth(activity: Activity): Int {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -30,4 +32,8 @@ fun convertDpToPixel(dp: Float, context: Context?): Float {
         val metrics = Resources.getSystem().displayMetrics
         dp * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
     }
+}
+
+fun createVerticalLinearLayoutManager(context: Context): LinearLayoutManager {
+    return LinearLayoutManager(context, RecyclerView.VERTICAL,false)
 }

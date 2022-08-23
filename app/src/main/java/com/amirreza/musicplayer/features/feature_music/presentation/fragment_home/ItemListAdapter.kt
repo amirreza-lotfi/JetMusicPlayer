@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ItemTrackBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Artist
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
@@ -22,9 +23,9 @@ class ItemListAdapter<T>(
     inner class ItemHolder(private val binding: ItemTrackBinding) :RecyclerView.ViewHolder(binding.root) {
         fun onBind(item: T) {
 
-            var pic:String = ""
-            var title:String = ""
-            var caption:String = ""
+            var pic = ""
+            var title = ""
+            var caption = ""
             var duration:Long = 0
 
             if(item is Track){
@@ -32,11 +33,16 @@ class ItemListAdapter<T>(
                 title = item.trackName
                 caption = item.artist
                 duration = item.duration
-            }else if(item is Album){
+            }else if(item is Album) {
                 pic = item.tracks[0].albumArtPic
                 title = item.albumName
-                caption = item.artistName
+                caption = "${item.artistName} (${item.tracks.size})"
                 duration = item.tracks.sumOf { it.duration }
+            }else if(item is Artist){
+                pic = item.albums[0].tracks[0].albumArtPic
+                title = item.name
+                caption = "album count : ${item.albums.size}"
+                duration = item.calculateDuration()
             }
 
 

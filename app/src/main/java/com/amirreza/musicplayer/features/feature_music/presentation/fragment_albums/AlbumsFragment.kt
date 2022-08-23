@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ViewItemListBinding
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.ItemListAdapter
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
@@ -32,8 +34,8 @@ class AlbumsFragment : JetFragment(),OnItemClickEvent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.title.text = "Albums(${viewModel.albumList.value!!.size})"
-        val rv = binding.tracksRecyclerView
+        binding.title.text = "Albums (${viewModel.albumList.value!!.size})"
+        val rv = binding.itemRecyclerView
         rv.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         viewModel.albumList.observe(viewLifecycleOwner){
             it?.let {
@@ -45,7 +47,12 @@ class AlbumsFragment : JetFragment(),OnItemClickEvent {
     override fun <T> click(item: T) {
         viewModel.albumList.value?.let {
             val bundle = Bundle()
-
+            val trackList = (item as Album).tracks
+            val trackListArray = arrayListOf<Track>().apply {
+                this.addAll(trackList)
+            }
+            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackListArray)
+            findNavController().navigate(R.id.action_albumsFragment_to_tracksFragment,bundle)
         }
     }
 

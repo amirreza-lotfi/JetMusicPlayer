@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.amirreza.musicplayer.features.feature_music.data.MusicRepositoryImpl
 import com.amirreza.musicplayer.features.feature_music.domain.repository.MusicRepository
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_albums.AlbumsViewModel
+import com.amirreza.musicplayer.features.feature_music.presentation.fragment_artist.ArtistsViewModel
 import com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music.PlayingMusicViewModel
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.HomeViewModel
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks.TrackViewModel
@@ -40,6 +41,9 @@ class JetApplication:Application() {
             }
             viewModel { (bundle:Bundle)->
                 AlbumsViewModel(bundle)
+            }
+            viewModel { (bundle:Bundle)->
+                ArtistsViewModel(bundle)
             }
         }
 

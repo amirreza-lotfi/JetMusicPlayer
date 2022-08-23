@@ -14,6 +14,7 @@ import com.amirreza.musicplayer.features.feature_music.presentation.fragment_hom
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
+import com.amirreza.musicplayer.general.createVerticalLinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -34,8 +35,8 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = binding.tracksRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+        val recyclerView = binding.itemRecyclerView
+        recyclerView.layoutManager = createVerticalLinearLayoutManager(requireContext())
         viewModel.trackList.observe(viewLifecycleOwner){
             binding.title.text = "Tracks (${it.size})"
             recyclerView.adapter = ItemListAdapter(this,requireContext(),it)
@@ -45,10 +46,9 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
     override fun <T>click(track: T) {
         viewModel.trackList.value?.let {
             val bundle = Bundle()
-            val trackList = viewModel.putTrackToFirst(it.toMutableList(),track as Track)
 
-            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
-
+            bundle.putInt("2",it.indexOf(track as Track))
+            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it)
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }

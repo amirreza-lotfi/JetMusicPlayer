@@ -16,6 +16,12 @@
         <action
             android:id="@+id/action_homeFragment_to_tracksFragment"
             app:destination="@id/tracksFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_artistsFragment"
+            app:destination="@id/artistsFragment" />
     </fragment>
     <fragment
         android:id="@+id/playingMusicFragment"
@@ -27,4 +33,20 @@
         android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks.TracksFragment"
         android:label="fragment_tracks"
         tools:layout="@layout/view_item_list" />
+    <fragment
+        android:id="@+id/albumsFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_albums.AlbumsFragment"
+        android:label="AlbumsFragment" >
+        <action
+            android:id="@+id/action_albumsFragment_to_tracksFragment"
+            app:destination="@id/tracksFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/artistsFragment"
+        android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_artist.ArtistsFragment"
+        android:label="ArtistsFragment" >
+        <action
+            android:id="@+id/action_artistsFragment_to_albumsFragment"
+            app:destination="@id/albumsFragment" />
+    </fragment>
 </navigation>

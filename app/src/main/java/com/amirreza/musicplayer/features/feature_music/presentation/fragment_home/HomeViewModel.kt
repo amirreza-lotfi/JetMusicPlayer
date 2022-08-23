@@ -44,7 +44,4 @@ class HomeViewModel(private val musicRepository: MusicRepository):JetViewModel()
         return _playListsLiveData.value?.size ?: 0
     }
 
-    fun putTrackToFirst(trackList: MutableList<Track>, track: Track): MutableList<Track> {
-        return trackList
-    }
 }

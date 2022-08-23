@@ -12,14 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
-import com.amirreza.musicplayer.general.RESPONSE_OF_PERMISSION_REQUEST
-import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.databinding.FragmentHomeBinding
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
+import com.amirreza.musicplayer.features.feature_music.domain.entities.Artist
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
-import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
-import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
+import com.amirreza.musicplayer.general.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -56,6 +55,29 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
                 findNavController().navigate(R.id.action_homeFragment_to_tracksFragment,bundle)
             }
         }
+
+        binding.albumItem.setOnClickListener {
+            viewModel.albumsLiveData.value?.let{
+                val bundle = Bundle()
+                val arrayList = arrayListOf<Album>().apply {
+                    this.addAll(it)
+                }
+                bundle.putParcelableArrayList(EXTRA_ALBUM_LIST,arrayList)
+                findNavController().navigate(R.id.action_homeFragment_to_albumsFragment,bundle)
+            }
+        }
+
+        binding.artistItem.setOnClickListener {
+            viewModel.artistsLiveData.value?.let {
+                val bundle = Bundle()
+                val arrayList = arrayListOf<Artist>().apply {
+                    this.addAll(it)
+                }
+                bundle.putParcelableArrayList(EXTRA_ALBUM_LIST,arrayList)
+                findNavController().navigate(R.id.action_homeFragment_to_artistsFragment,bundle)
+            }
+        }
+
     }
 
     private fun setUpPermissions(){
@@ -81,7 +103,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
     }
 
     private fun setUpUi(){
-        val recyclerView = binding.tracksRecyclerView
+        val recyclerView = binding.itemRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         viewModel.tracksLiveData.observe(viewLifecycleOwner){
             recyclerView.adapter = ItemListAdapter(this,requireContext(),it!!)
@@ -108,10 +130,9 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
     override fun <T> click(item: T) {
         viewModel.tracksLiveData.value?.let {
             val bundle = Bundle()
-            val trackList = viewModel.putTrackToFirst(it.toMutableList(),item as Track)
 
-            bundle.putInt("2",trackList.indexOf(item))
-            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackList as ArrayList)
+            bundle.putInt("2",it.indexOf(item as Track))
+            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it as ArrayList)
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }
