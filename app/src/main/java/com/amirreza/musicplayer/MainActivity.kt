@@ -95,7 +95,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.isTrackPlaying.observe(this) { isPlaying ->
             setUpPlayingOrPauseButtonImageResource(isPlaying)
-            if (isPlaying) {
+            val currentFragmentIsPlayingFragment = currentFragmentIsPlayingFragment()
+
+            if (isPlaying && !currentFragmentIsPlayingFragment ) {
                 binding.bottomTrackPlayer.visibility = VISIBLE
             }
         }
@@ -155,4 +157,8 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        playingMusicService?.release()
+    }
 }

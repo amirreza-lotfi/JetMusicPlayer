@@ -95,6 +95,7 @@
             android:background="@drawable/background_home_items_row">
 
             <TextView
+                android:id="@+id/titleOfList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tracks"

@@ -3,9 +3,11 @@ package com.amirreza.musicplayer.features.feature_music.presentation.fragment_ho
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -37,16 +39,6 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpPermissions()
-
-        viewModel.permissionNotAllowed.observe(viewLifecycleOwner){ mustShow->
-            showPermissionNotAllowedView(mustShow)
-        }
-
-        setTracksCountInUi()
-        setAlbumsCountInUi()
-        setArtistsCountInUi()
-        setPlayListCountInUi()
 
         binding.tracksItem.setOnClickListener {
             viewModel.tracksLiveData.value?.let {
@@ -80,12 +72,16 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        setUpPermissions()
+    }
+
     private fun setUpPermissions(){
         if(hasPermissionsAllowed()){
             setUpUi()
         }else{
             askStoragePermissions()
-
         }
     }
 
@@ -94,21 +90,41 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         val isWriteFilePermissionAllowed =  ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         return isReadFilePermissionAllowed && isWriteFilePermissionAllowed
     }
+
     private fun askStoragePermissions(){
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            RESPONSE_OF_PERMISSION_REQUEST
+        requestPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
         )
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        var result = true
+        permissions.entries.forEach{
+            result = it.value && result
+        }
+        Log.i("homeFragment","requestPermissionLauncher: $result" )
+
+        if(result == true)
+            setUpUi()
+    }
+
+
     private fun setUpUi(){
+        setTracksCountInUi()
+        setAlbumsCountInUi()
+        setArtistsCountInUi()
+        setPlayListCountInUi()
+
         val recyclerView = binding.itemRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
         viewModel.tracksLiveData.observe(viewLifecycleOwner){
             recyclerView.adapter = ItemListAdapter(this,requireContext(),it!!)
         }
-
     }
 
     private fun setTracksCountInUi(){
@@ -118,11 +134,9 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
     private fun setAlbumsCountInUi(){
         binding.albumItem.setItemCount(viewModel.getAlbumsCount())
     }
-
     private fun setArtistsCountInUi(){
         binding.artistItem.setItemCount(viewModel.getArtistsCount())
     }
-
     private fun setPlayListCountInUi(){
         binding.playListItem.setItemCount(viewModel.getPlayListCount())
     }
@@ -136,6 +150,5 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }
-
 
 }

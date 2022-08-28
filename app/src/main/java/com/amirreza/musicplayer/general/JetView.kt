@@ -10,7 +10,7 @@ interface JetView {
     val viewContext: Context?
     val rootView:CoordinatorLayout?
 
-    fun showPermissionNotAllowedView(mustShow:Boolean){
+    fun showPermissionAllowedView(allowed:Boolean){
         viewContext?.let { context->
             rootView?.let { root->
                 var view = root.findViewById<View>(R.id.view_permission_not_allowed)
@@ -18,7 +18,7 @@ interface JetView {
                     view = LayoutInflater.from(context).inflate(R.layout.view_permission_not_allowed,root,false)
                     root.addView(view)
                 }
-                view.visibility = if(mustShow) View.VISIBLE else View.GONE
+                view.visibility = if(allowed) View.GONE else View.VISIBLE
             }
         }
     }

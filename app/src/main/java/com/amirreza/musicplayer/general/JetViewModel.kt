@@ -4,5 +4,5 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 open class JetViewModel:ViewModel() {
-    val permissionNotAllowed = MutableLiveData(true)
+    val permissionAllowed = MutableLiveData(false)
 }

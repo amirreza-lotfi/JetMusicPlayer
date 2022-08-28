@@ -26,7 +26,7 @@ class HomeViewModel(private val musicRepository: MusicRepository):JetViewModel()
     fun onEvent(event: HomeEvent){
         when(event){
             is HomeEvent.PermissionStatus ->{
-                permissionNotAllowed.value = event.boolean
+                permissionAllowed.value = event.boolean
             }
         }
     }

@@ -17,7 +17,7 @@ class MainViewModel : ViewModel() {
     private val _trackDuration = MutableLiveData(JetMusicTimer())
     val trackPosition: LiveData<JetMusicTimer> = _trackDuration
 
-    private val _isTrackPlaying = MutableLiveData(true)
+    private val _isTrackPlaying = MutableLiveData(false)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
 
     fun onEvent(event:ActivityEvent){
