@@ -128,6 +128,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
     }
 
     private fun setTracksCountInUi(){
+        binding.titleOfList.text = "Tracks (${viewModel.getTracksCount()})"
         val track: HomeActionItem = binding.tracksItem
         track.setItemCount(viewModel.getTracksCount())
     }

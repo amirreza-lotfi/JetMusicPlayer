@@ -32,7 +32,11 @@
         android:id="@+id/tracksFragment"
         android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_tracks.TracksFragment"
         android:label="fragment_tracks"
-        tools:layout="@layout/view_item_list" />
+        tools:layout="@layout/view_item_list" >
+        <action
+            android:id="@+id/action_tracksFragment_to_playingMusicFragment"
+            app:destination="@id/playingMusicFragment" />
+    </fragment>
     <fragment
         android:id="@+id/albumsFragment"
         android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_albums.AlbumsFragment"

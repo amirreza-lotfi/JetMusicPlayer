@@ -49,7 +49,7 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
 
             bundle.putInt("2",it.indexOf(track as Track))
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it)
-            findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
+            findNavController().navigate(R.id.action_tracksFragment_to_playingMusicFragment,bundle)
         }
     }
 
