@@ -6,6 +6,7 @@ import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerLis
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.DISCONTINUITY_REASON_SKIP
 
 
 class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: ExoPlayer, clickedMediaItemIndex:Int) {
@@ -83,13 +84,23 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
                         playerListener.onMusicPlayerFinishPlayingAllMedia()
                         playerListener.onFinishTrack(getCurrentTrack())
                     }
+                    Player.DISCONTINUITY_REASON_SEEK -> {
+                        Log.i("playerManager","position_changed ${oldPosition.positionMs} ${newPosition.positionMs}")
+                    }
                 }
             }
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 playerListener.isTrackPlaying(isPlaying)
             }
 
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                super.onMediaItemTransition(mediaItem, reason)
+            }
         })
+    }
+
+    fun release(){
+        exoPlayer.stop()
     }
 
 }

@@ -2,10 +2,12 @@ package com.amirreza.musicplayer.features.feature_playingMusic.services
 
 import android.app.Service
 import android.content.Intent
+import android.content.res.Configuration
 import android.media.session.MediaSession
 import android.os.Binder
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.MusicPlayerNotification
@@ -22,13 +24,9 @@ class PlayingMusicService: Service() {
     private lateinit var musicPlayerNotification:MusicPlayerNotification
     private val exoPlayer by inject<ExoPlayer>()
     private var rememberedTrackSeekbarPosition = 0L
-    private var mediaSessionConnector:MediaSessionConnector  ? = null
+
     override fun onBind(p0: Intent?): IBinder {
         return PlayingMusicBinder()
-    }
-
-    override fun onCreate() {
-        super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -43,18 +41,18 @@ class PlayingMusicService: Service() {
         return START_STICKY
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
+        playerManager.release()
         stopForeground(true)
+        Log.i("123456789","destroy called")
     }
 
 
-    override fun onUnbind(intent: Intent?): Boolean {
-        return super.onUnbind(intent)
+
+    fun getCurrentTrack():Track{
+        return playerManager.getCurrentTrack()
     }
-
-
     private fun playTrack(){
         playerManager.play()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
@@ -105,10 +103,17 @@ class PlayingMusicService: Service() {
     inner class PlayingMusicBinder: Binder(){
         fun getService(): PlayingMusicService = this@PlayingMusicService
     }
+
+    fun release(){
+        playerManager.release()
+        stopForeground(true)
+        stopSelf()
+    }
 }
 
 interface PlayerListener{
     fun onFinishTrack(nextTrack:Track)
     fun onMusicPlayerFinishPlayingAllMedia()
     fun isTrackPlaying(boolean: Boolean)
+    fun onTrackPositionChanged(newPosition:Int)
 }

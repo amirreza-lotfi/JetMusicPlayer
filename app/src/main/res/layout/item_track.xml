@@ -9,8 +9,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/trackArtPicCardView"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         app:cardCornerRadius="16dp"
         android:layout_marginVertical="20dp"
         app:layout_constraintBottom_toTopOf="@id/seprator"
@@ -20,7 +20,7 @@
             android:id="@+id/artcPicOfItem"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="musicArt"
+            android:contentDescription="@string/musicart"
             tools:srcCompat="@drawable/ic_launcher_background" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -69,9 +69,10 @@
         android:id="@+id/caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:textAppearance="?textAppearanceCaption"
+        app:layout_constraintBottom_toBottomOf="@+id/trackArtPicCardView"
         app:layout_constraintStart_toEndOf="@+id/trackArtPicCardView"
         app:layout_constraintTop_toBottomOf="@+id/titleOfItem"
         tools:text="Marjan Farsadi" />

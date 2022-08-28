@@ -29,6 +29,7 @@ class PlayingMusicFragment : JetFragment() {
     private val viewModel: PlayingMusicViewModel by inject() { parametersOf(this.arguments) }
     private var playingMusicService: PlayingMusicService? = null
     lateinit var slider: JetSeekBar
+    lateinit var intentToPlayingService: Intent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +41,7 @@ class PlayingMusicFragment : JetFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
         slider = binding.slider
         val widthOfSeekbar =
             ((getScreenWidth(requireActivity())) - convertDpToPixel(52f, requireContext())).toInt()
@@ -51,8 +53,6 @@ class PlayingMusicFragment : JetFragment() {
         )
 
         viewModel.trackList.value?.let { tracks ->
-            val intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
-
             startPlayingTrackService(intentToPlayingService, tracks as ArrayList)
             getNotificationActions()
             bindToPlayingMusicService(intentToPlayingService)
@@ -120,125 +120,131 @@ class PlayingMusicFragment : JetFragment() {
     }
 
     private fun bindToPlayingMusicService(intent: Intent) {
-        activity?.bindService(intent, object : ServiceConnection {
-            override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-                playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
+        activity?.bindService(intent, serviceConnection, BIND_AUTO_CREATE)
+    }
 
-                viewModel.startTimer()
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
 
-                playingMusicService?.let { playingMusicService ->
-                    binding.pausePlayBtn.setOnClickListener {
-                        viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
-                        if (viewModel.isTrackPlaying.value == true) {
-                            playingMusicService.pauseTrack()
-                        } else {
-                            playingMusicService.resumeTrack()
-                        }
+            viewModel.startTimer()
+
+            playingMusicService?.let { playingMusicService ->
+                binding.pausePlayBtn.setOnClickListener {
+                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
+                    if (viewModel.isTrackPlaying.value == true) {
+                        playingMusicService.pauseTrack()
+                    } else {
+                        playingMusicService.resumeTrack()
                     }
+                }
 
-                    binding.playNextTrack.setOnClickListener {
-                        Log.i("fragmentPLayingggg", "onNext Track Clicked: Done")
-                        val newTrack = playingMusicService.playNextTrack()
-                        viewModel.onUiEvent(PlayingFragmentEvent.OnNextTrackClicked(newTrack))
-                    }
+                binding.playNextTrack.setOnClickListener {
+                    Log.i("fragmentPLayingggg", "onNext Track Clicked: Done")
+                    val newTrack = playingMusicService.playNextTrack()
+                    viewModel.onUiEvent(PlayingFragmentEvent.OnNextTrackClicked(newTrack))
+                }
 
-                    binding.playPreviousTrack.setOnClickListener {
-                        val newTrack = playingMusicService.playPreviousTrack()
+                binding.playPreviousTrack.setOnClickListener {
+                    val newTrack = playingMusicService.playPreviousTrack()
+                    viewModel.onUiEvent(
+                        PlayingFragmentEvent.OnPreviousTrackClicked(
+                            newTrack
+                        )
+                    )
+                }
+
+                playingMusicService.onPlayingTrackListener(object : PlayerListener {
+                    override fun onFinishTrack(nextTrack: Track) {
+                        binding.slider.updateSeekbarByNewTrackPosition(0L)
+                        Log.i("fragmentPLayingggg", "set Value0 In track Finished: Done")
                         viewModel.onUiEvent(
-                            PlayingFragmentEvent.OnPreviousTrackClicked(
-                                newTrack
+                            PlayingFragmentEvent.OnTrackFinished(
+                                nextTrack
                             )
                         )
                     }
 
-                    playingMusicService.onPlayingTrackListener(object : PlayerListener {
-                        override fun onFinishTrack(nextTrack: Track) {
-                            binding.slider.updateSeekbarByNewTrackPosition(0L)
-                            Log.i("fragmentPLayingggg", "set Value0 In track Finished: Done")
-                            viewModel.onUiEvent(
-                                PlayingFragmentEvent.OnTrackFinished(
-                                    nextTrack
-                                )
+                    override fun onMusicPlayerFinishPlayingAllMedia() {
+                        binding.slider.updateSeekbarByNewTrackPosition(0L)
+                    }
+
+                    override fun isTrackPlaying(boolean: Boolean) {
+                        viewModel.onUiEvent(
+                            PlayingFragmentEvent.SetIsTrackPlayingLiveData(
+                                boolean,
+                                playingMusicService.getCurrentPositionOfTrack()
                             )
-                        }
+                        )
+                    }
 
-                        override fun onMusicPlayerFinishPlayingAllMedia() {
-                            binding.slider.updateSeekbarByNewTrackPosition(0L)
-                        }
-
-                        override fun isTrackPlaying(boolean: Boolean) {
-                            viewModel.onUiEvent(
-                                PlayingFragmentEvent.SetIsTrackPlayingLiveData(
-                                    boolean,
-                                    playingMusicService.getCurrentPositionOfTrack()
-                                )
-                            )
-                        }
-                    })
-                }
-
-                binding.playNextTrack.visibility =
-                    if (!playingMusicService!!.hasNextTrack()) View.INVISIBLE else View.VISIBLE
-                binding.playPreviousTrack.visibility =
-                    if (!playingMusicService!!.hasPreviousTrack()) View.INVISIBLE else View.VISIBLE
-
+                    override fun onTrackPositionChanged(newPosition: Int) {
+                    }
+                })
             }
 
-            override fun onServiceDisconnected(p0: ComponentName?) {
-                playingMusicService = null
-            }
+            binding.playNextTrack.visibility =
+                if (!playingMusicService!!.hasNextTrack()) View.INVISIBLE else View.VISIBLE
+            binding.playPreviousTrack.visibility =
+                if (!playingMusicService!!.hasPreviousTrack()) View.INVISIBLE else View.VISIBLE
 
-        }, BIND_AUTO_CREATE)
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            playingMusicService = null
+        }
     }
 
     private fun getNotificationActions() {
-        activity?.registerReceiver(object : BroadcastReceiver() {
-            override fun onReceive(_context: Context?, _intent: Intent?) {
-                _context?.let { context ->
-                    _intent?.let { intent ->
-                        when (intent.extras?.getString("actionName") ?: "") {
-                            NotificationActions.NEXT.actionName -> {
-                                playingMusicService?.let { playingMusicService ->
-                                    val newTrack = playingMusicService.playNextTrack()
-                                    viewModel.onUiEvent(
-                                        PlayingFragmentEvent.OnNextTrackClicked(
-                                            newTrack
-                                        )
-                                    )
-                                }
-                            }
-                            NotificationActions.PREVIOUS.actionName -> {
-                                playingMusicService?.let { playingMusicService ->
-                                    val newTrack = playingMusicService.playPreviousTrack()
-                                    viewModel.onUiEvent(
-                                        PlayingFragmentEvent.OnNextTrackClicked(
-                                            newTrack
-                                        )
-                                    )
-                                }
-                            }
-                            NotificationActions.CLOSE.actionName -> {
-                                playingMusicService?.onDestroy()
-                                //todo
-                            }
-                            NotificationActions.PLAY_PAUSE.actionName -> {
-                                playingMusicService?.let { service ->
-                                    if (service.isTrackPlaying()) {
-                                        viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
-                                        service.pauseTrack()
-                                    } else {
-                                        viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
-                                        service.resumeTrack()
-                                    }
-                                }
-                            }
+        activity?.registerReceiver(broadcastReceiver, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
+    }
 
-                            else -> {}
+    val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(_context: Context?, _intent: Intent?) {
+            _context?.let { context ->
+                _intent?.let { intent ->
+                    when (intent.extras?.getString("actionName") ?: "") {
+                        NotificationActions.NEXT.actionName -> {
+                            playingMusicService?.let { playingMusicService ->
+                                val newTrack = playingMusicService.playNextTrack()
+                                viewModel.onUiEvent(
+                                    PlayingFragmentEvent.OnNextTrackClicked(
+                                        newTrack
+                                    )
+                                )
+                            }
                         }
+                        NotificationActions.PREVIOUS.actionName -> {
+                            playingMusicService?.let { playingMusicService ->
+                                val newTrack = playingMusicService.playPreviousTrack()
+                                viewModel.onUiEvent(
+                                    PlayingFragmentEvent.OnNextTrackClicked(
+                                        newTrack
+                                    )
+                                )
+                            }
+                        }
+                        NotificationActions.CLOSE.actionName -> {
+                            playingMusicService?.onDestroy()
+                            //todo
+                        }
+                        NotificationActions.PLAY_PAUSE.actionName -> {
+                            playingMusicService?.let { service ->
+                                if (service.isTrackPlaying()) {
+                                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
+                                    service.pauseTrack()
+                                } else {
+                                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
+                                    service.resumeTrack()
+                                }
+                            }
+                        }
+
+                        else -> {}
                     }
                 }
             }
-        }, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
+        }
     }
 
     private fun setTrackArtist(artist: String) {
@@ -276,8 +282,7 @@ class PlayingMusicFragment : JetFragment() {
     }
 
     override fun onDestroy() {
-        playingMusicService?.onDestroy()
         super.onDestroy()
+        activity?.unregisterReceiver(broadcastReceiver)
     }
-
 }
