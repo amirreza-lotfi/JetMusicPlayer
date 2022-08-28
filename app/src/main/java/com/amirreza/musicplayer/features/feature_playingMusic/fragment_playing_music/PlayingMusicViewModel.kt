@@ -1,11 +1,13 @@
 package com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
+import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,11 +39,14 @@ class PlayingMusicViewModel(
     private val _isTrackPlaying = MutableLiveData(true)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
 
+    var indexOfSelectedItem = 0
+
     private var durationTimerJob: Job? = null
 
     init {
         _trackList.value = bundle.getParcelableArrayList(EXTRA_TRACK_LIST)
-        _currentTrack.value = _trackList.value!![0]
+        indexOfSelectedItem = bundle.getInt(EXTRA_TRACK_CLICKED_POSITION)
+        _currentTrack.value = _trackList.value!![indexOfSelectedItem]
     }
 
     fun startTimer(trackPos: Long = trackPosition.value!!) {

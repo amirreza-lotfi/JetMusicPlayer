@@ -41,6 +41,8 @@ class PlayingMusicFragment : JetFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bundle = Bundle()
+        bundle.putInt("2",12)
         intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
         slider = binding.slider
         val widthOfSeekbar =
@@ -85,7 +87,6 @@ class PlayingMusicFragment : JetFragment() {
             })
 
 
-
             setTrackName(current.trackName)
             setTrackArtist(current.artist)
             setTrackBackgroundImage(current.albumArtPic)
@@ -116,6 +117,7 @@ class PlayingMusicFragment : JetFragment() {
 
     private fun startPlayingTrackService(intent: Intent, arrayList: ArrayList<Track>) {
         intent.putParcelableArrayListExtra(EXTRA_TRACK_LIST, arrayList)
+        intent.putExtra(EXTRA_TRACK_CLICKED_POSITION,viewModel.indexOfSelectedItem)
         activity?.startService(intent)
     }
 

@@ -12,6 +12,7 @@ import com.amirreza.musicplayer.databinding.ViewItemListBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.ItemListAdapter
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
+import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
 import com.amirreza.musicplayer.general.createVerticalLinearLayoutManager
@@ -47,7 +48,7 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
         viewModel.trackList.value?.let {
             val bundle = Bundle()
 
-            bundle.putInt("2",it.indexOf(track as Track))
+            bundle.putInt(EXTRA_TRACK_CLICKED_POSITION,it.indexOf(track as Track))
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it)
             findNavController().navigate(R.id.action_tracksFragment_to_playingMusicFragment,bundle)
         }
