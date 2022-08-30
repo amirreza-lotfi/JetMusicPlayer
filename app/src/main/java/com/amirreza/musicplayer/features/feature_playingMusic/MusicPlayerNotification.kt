@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.support.v4.media.session.MediaSessionCompat
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -34,25 +35,55 @@ class MusicPlayerNotification(
             .setContentTitle(track.trackName)
             .setContentText(track.artist)
             .addAction(notificationAction(NotificationActions.PREVIOUS))
-            .addAction(notificationAction(NotificationActions.PLAY_PAUSE))
+            .addAction(notificationAction(NotificationActions.PLAY))
             .addAction(notificationAction(NotificationActions.NEXT))
             .addAction(notificationAction(NotificationActions.CLOSE))
-        notificationBuilder!!.setStyle(
-            androidx.media.app.NotificationCompat.MediaStyle()
-                .setShowActionsInCompactView(0, 1, 2)
-        )
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle()
+                    .setShowActionsInCompactView(0, 1, 2)
+            )
         return notificationBuilder!!.build()
     }
 
     fun updateNotification(newTrack: Track, isTrackPlaying: Boolean) {
-        notificationBuilder?.let {
-            val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
-            it.setOngoing(isTrackPlaying)
-            it.setLargeIcon(artPic)
-                .setContentTitle(newTrack.trackName)
-                .setContentText(newTrack.artist)
-                .setSubText(newTrack.albumName)
-            NotificationManagerCompat.from(context).notify(121221, it.build())
+        if (isTrackPlaying) {
+            Log.i("updateNotificationLog","$isTrackPlaying = true")
+            notificationBuilder?.let {
+                val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
+                it.setOngoing(isTrackPlaying)
+                it.setLargeIcon(artPic)
+                    .setContentTitle(newTrack.trackName)
+                    .setContentText(newTrack.artist)
+                    .setSubText(newTrack.albumName)
+                    .addAction(notificationAction(NotificationActions.PREVIOUS))
+                    .addAction(notificationAction(NotificationActions.PAUSE))
+                    .addAction(notificationAction(NotificationActions.NEXT))
+                    .addAction(notificationAction(NotificationActions.CLOSE))
+                    .setStyle(
+                        androidx.media.app.NotificationCompat.MediaStyle()
+                            .setShowActionsInCompactView(0, 1, 2)
+                    )
+                NotificationManagerCompat.from(context).notify(121221, it.build())
+            }
+        } else {
+            Log.i("updateNotificationLog","$isTrackPlaying = false")
+            notificationBuilder?.let {
+                val artPic = MusicHelper.getBitmapOfTrack(context, newTrack)
+                it.setOngoing(isTrackPlaying)
+                it.setLargeIcon(artPic)
+                    .setContentTitle(newTrack.trackName)
+                    .setContentText(newTrack.artist)
+                    .setSubText(newTrack.albumName)
+                    .addAction(notificationAction(NotificationActions.PREVIOUS))
+                    .addAction(notificationAction(NotificationActions.PLAY))
+                    .addAction(notificationAction(NotificationActions.NEXT))
+                    .addAction(notificationAction(NotificationActions.CLOSE))
+                    .setStyle(
+                        androidx.media.app.NotificationCompat.MediaStyle()
+                            .setShowActionsInCompactView(0, 1, 2)
+                    )
+                NotificationManagerCompat.from(context).notify(121221, it.build())
+            }
         }
     }
 
@@ -74,10 +105,12 @@ class MusicPlayerNotification(
 
     private fun notificationAction(action: NotificationActions): NotificationCompat.Action {
         val icon = when (action) {
-            NotificationActions.PLAY_PAUSE -> {
+            NotificationActions.PLAY -> {
                 R.drawable.ic_play
             }
-
+            NotificationActions.PAUSE -> {
+                R.drawable.ic_baseline_pause_24
+            }
             NotificationActions.NEXT -> {
                 R.drawable.ic_next_media
             }

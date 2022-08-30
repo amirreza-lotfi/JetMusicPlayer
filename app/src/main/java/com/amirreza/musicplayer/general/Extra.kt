@@ -4,7 +4,7 @@ const val RESPONSE_OF_PERMISSION_REQUEST = 0
 const val EXTRA_TRACK_LIST = "iiij0@23d2esweqxvxqed"
 const val EXTRA_ALBUM_LIST = "23usd"
 const val EXTRA_Artist_LIST = "23uihwevsd"
-const val EXTRA_TRACK_CLICKED_POSITION = "34560987654"
+const val EXTRA_TRACK_CLICKED_POSITION = "2"
 
 
 object NotificationConst{
@@ -16,5 +16,5 @@ object NotificationConst{
 }
 
 enum class NotificationActions(val actionName:String){
-    PLAY_PAUSE("play,pause"),NEXT("next"),PREVIOUS("previous"),CLOSE("close")
+    PLAY("play"),NEXT("next"),PREVIOUS("previous"),CLOSE("close"),PAUSE("pause")
 }

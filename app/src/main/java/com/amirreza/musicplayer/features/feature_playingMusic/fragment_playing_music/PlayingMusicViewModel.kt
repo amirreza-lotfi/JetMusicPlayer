@@ -104,4 +104,8 @@ class PlayingMusicViewModel(
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        stopTimer()
+    }
 }

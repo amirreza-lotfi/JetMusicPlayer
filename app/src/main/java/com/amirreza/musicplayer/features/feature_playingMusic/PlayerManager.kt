@@ -85,16 +85,12 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
                         playerListener.onFinishTrack(getCurrentTrack())
                     }
                     Player.DISCONTINUITY_REASON_SEEK -> {
-                        Log.i("playerManager","position_changed ${oldPosition.positionMs} ${newPosition.positionMs}")
+                        playerListener.onTrackPositionChanged(newPosition.positionMs)
                     }
                 }
             }
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 playerListener.isTrackPlaying(isPlaying)
-            }
-
-            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-                super.onMediaItemTransition(mediaItem, reason)
             }
         })
     }

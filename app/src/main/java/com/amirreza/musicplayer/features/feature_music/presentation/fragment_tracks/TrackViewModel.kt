@@ -17,17 +17,4 @@ class TrackViewModel(
     init {
         _trackList.value = bundle.getParcelableArrayList(EXTRA_TRACK_LIST)
     }
-
-    private fun getTrackListCount():Int{
-        return _trackList.value?.size ?: 0
-    }
-    fun putTrackToFirst(trackList: MutableList<Track>, track: Track): MutableList<Track> {
-        val indexOfTrack = trackList.indexOf(track)
-
-        val ttt = trackList[0]
-        trackList[0] = trackList[indexOfTrack]
-        trackList[indexOfTrack] = ttt
-        return trackList
-    }
-
 }

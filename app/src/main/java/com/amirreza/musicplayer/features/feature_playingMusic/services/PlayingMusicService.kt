@@ -111,9 +111,3 @@ class PlayingMusicService: Service() {
     }
 }
 
-interface PlayerListener{
-    fun onFinishTrack(nextTrack:Track)
-    fun onMusicPlayerFinishPlayingAllMedia()
-    fun isTrackPlaying(boolean: Boolean)
-    fun onTrackPositionChanged(newPosition:Int)
-}

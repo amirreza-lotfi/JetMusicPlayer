@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
@@ -104,7 +105,9 @@ class PlayingMusicFragment : JetFragment() {
             setCurrentPositionText(it.toLong())
         }
 
-
+        binding.backBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setUpPlayingOrPauseButtonImageResource(isTrackPlaying: Boolean) {
@@ -142,7 +145,6 @@ class PlayingMusicFragment : JetFragment() {
                 }
 
                 binding.playNextTrack.setOnClickListener {
-                    Log.i("fragmentPLayingggg", "onNext Track Clicked: Done")
                     val newTrack = playingMusicService.playNextTrack()
                     viewModel.onUiEvent(PlayingFragmentEvent.OnNextTrackClicked(newTrack))
                 }
@@ -180,7 +182,7 @@ class PlayingMusicFragment : JetFragment() {
                         )
                     }
 
-                    override fun onTrackPositionChanged(newPosition: Int) {
+                    override fun onTrackPositionChanged(newPosition: Long) {
                     }
                 })
             }
@@ -201,7 +203,7 @@ class PlayingMusicFragment : JetFragment() {
         activity?.registerReceiver(broadcastReceiver, IntentFilter(NOTIFICATION_ACTION_BROADCAST))
     }
 
-    val broadcastReceiver = object : BroadcastReceiver() {
+    private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(_context: Context?, _intent: Intent?) {
             _context?.let { context ->
                 _intent?.let { intent ->
@@ -230,7 +232,7 @@ class PlayingMusicFragment : JetFragment() {
                             playingMusicService?.onDestroy()
                             //todo
                         }
-                        NotificationActions.PLAY_PAUSE.actionName -> {
+                        NotificationActions.PLAY.actionName -> {
                             playingMusicService?.let { service ->
                                 if (service.isTrackPlaying()) {
                                     viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)

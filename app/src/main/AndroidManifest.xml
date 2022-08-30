@@ -20,7 +20,7 @@
         android:theme="@style/Theme.MusicPlayer"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".features.feature_music.presentation.activity_main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

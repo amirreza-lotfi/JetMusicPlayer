@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ViewItemListBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
@@ -44,11 +42,11 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
         }
     }
 
-    override fun <T>click(track: T) {
+    override fun <T>click(item: T) {
         viewModel.trackList.value?.let {
             val bundle = Bundle()
 
-            bundle.putInt(EXTRA_TRACK_CLICKED_POSITION,it.indexOf(track as Track))
+            bundle.putInt(EXTRA_TRACK_CLICKED_POSITION,it.indexOf(item as Track))
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it)
             findNavController().navigate(R.id.action_tracksFragment_to_playingMusicFragment,bundle)
         }

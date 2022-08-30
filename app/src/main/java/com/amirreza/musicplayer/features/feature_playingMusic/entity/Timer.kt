@@ -12,6 +12,7 @@ class JetMusicTimer {
 
     @OptIn(DelicateCoroutinesApi::class)
     fun startTimer(newPosition: Long = position.value!!) {
+        position.postValue(newPosition)
         job?.cancel()
         job = GlobalScope.launch(Dispatchers.IO) {
             while (true) {

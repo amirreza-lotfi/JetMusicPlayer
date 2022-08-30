@@ -31,7 +31,7 @@
         android:layout_marginStart="16dp"
         android:maxLines="2"
         android:layout_marginTop="2dp"
-        android:textAppearance="?textAppearanceHeadline2"
+        android:textAppearance="?textAppearanceHeadline3"
         app:layout_constraintEnd_toStartOf="@+id/frameLayout"
         app:layout_constraintStart_toEndOf="@id/trackArtPicCardView"
         app:layout_constraintTop_toTopOf="@+id/trackArtPicCardView"
@@ -39,10 +39,11 @@
 
     <ImageView
         android:id="@+id/moreIcon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/trackArtPicCardView"
+        app:layout_constraintTop_toTopOf="@+id/frameLayout"
         app:srcCompat="@drawable/ic_more_vert_24" />
 
     <FrameLayout
@@ -50,9 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_duration"
-        android:paddingHorizontal="4dp"
         android:layout_marginStart="24dp"
-        android:paddingVertical="2dp"
         android:layout_marginTop="2dp"
         app:layout_constraintEnd_toStartOf="@+id/moreIcon"
         app:layout_constraintTop_toTopOf="@+id/trackArtPicCardView">
@@ -61,8 +60,11 @@
             android:id="@+id/trackDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceHeadline3"
-            tools:text="4:19" />
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:textSize="10sp"
+            android:textColor="@color/darkGray"
+            tools:text="10:32" />
     </FrameLayout>
 
     <TextView
@@ -71,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textAppearance="?textAppearanceCaption"
+        android:textAppearance="?textAppearanceHeadline6"
         app:layout_constraintBottom_toBottomOf="@+id/trackArtPicCardView"
         app:layout_constraintStart_toEndOf="@+id/trackArtPicCardView"
         app:layout_constraintTop_toBottomOf="@+id/titleOfItem"

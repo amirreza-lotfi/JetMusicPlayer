@@ -1,16 +1,13 @@
-package com.amirreza.musicplayer
+package com.amirreza.musicplayer.features.feature_music.presentation.activity_main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.amirreza.ActivityEvent
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.entity.JetMusicTimer
 
 class MainViewModel : ViewModel() {
-    val destination = MutableLiveData<String>()
-
     private val _currentTrack = MutableLiveData<Track>()
     val currentTrack: LiveData<Track> = _currentTrack
 
@@ -20,7 +17,7 @@ class MainViewModel : ViewModel() {
     private val _isTrackPlaying = MutableLiveData(false)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
 
-    fun onEvent(event:ActivityEvent){
+    fun onEvent(event: ActivityEvent){
         when(event){
             is ActivityEvent.OnServiceAttached -> {
                 _currentTrack.value = event.newTrack
@@ -29,15 +26,17 @@ class MainViewModel : ViewModel() {
             is ActivityEvent.SetIsTrackPlayingLiveData ->{
                 _isTrackPlaying.value = event.isTrackPlaying
             }
-            is ActivityEvent.IsTrackPlayingEvent->{
+            is ActivityEvent.IsTrackPlayingEvent ->{
                 val isTrackPlaying = event.isTrackPlaying
                 val positionOfTrack = event.currentPositionOfTrack
 
                 if(isTrackPlaying){
                     _trackDuration.value?.startTimer(positionOfTrack)
+                }else{
+                    _trackDuration.value?.stopTime()
                 }
             }
-            is ActivityEvent.OnTrackFinished->{
+            is ActivityEvent.OnTrackFinished ->{
                 val isTrackPlaying = event.isTrackPlaying
                 val newTrack = event.nextTrack
                 val trackPosition = event.trackPosition
@@ -49,7 +48,7 @@ class MainViewModel : ViewModel() {
                     _trackDuration.value?.stopTime()
                 }
             }
-            is ActivityEvent.PausePlayButtonClicked->{
+            is ActivityEvent.PausePlayButtonClicked ->{
                 val isTheTrackPlaying = event.isTrackPlaying
 
                 if(isTheTrackPlaying){
@@ -62,10 +61,12 @@ class MainViewModel : ViewModel() {
                     _trackDuration.value?.startTimer(event.trackPosition)
                 }
             }
-            is ActivityEvent.OnCloseButtonClick->{
+            is ActivityEvent.OnCloseButtonClick ->{
                 _trackDuration.value?.stopTime()
             }
-            else -> {}
+            is ActivityEvent.OnTrackPositionChanged->{
+                _trackDuration.value?.startTimer(event.newPosition)
+            }
         }
     }
 
@@ -74,5 +75,10 @@ class MainViewModel : ViewModel() {
     }
     fun getCurrentTrackDurationAsDouble():Double{
         return _currentTrack.value?.duration?.toDouble() ?: 1.0
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        _trackDuration.value?.stopTime()
     }
 }

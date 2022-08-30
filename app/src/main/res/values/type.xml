@@ -1,35 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- use for title of screen-->
-    <style name="Theme.MusicPlayer.H1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textSize">20dp</item>
+    <!-- use for title of screen like Playlist(36)-->
+    <style name="Theme.MusicPlayer.Title" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="android:textSize">20sp</item>
         <item name="lineHeight">20dp</item>
         <item name="android:letterSpacing">0</item>
+        <item name="fontFamily">@font/noto_semi_bold</item>
         <item name="android:fontFamily">@font/noto_semi_bold</item>
         <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
-    <!-- use for name of music,-->
-    <style name="Theme.MusicPlayer.H2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="android:textSize">14dp</item>
+    <!-- use for name of music, album, track-->
+    <style name="Theme.MusicPlayer.H3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="android:textSize">14sp</item>
         <item name="lineHeight">20dp</item>
         <item name="android:letterSpacing">0</item>
+        <item name="fontFamily">@font/noto_regular</item>
+        <item name="android:fontFamily">@font/noto_regular</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <!-- use for caption of track in playingTrackFragment-->
+    <style name="Theme.MusicPlayer.H4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">20dp</item>
+        <item name="android:fontFamily">@font/noto_semi_bold</item>
+        <item name="fontFamily">@font/noto_semi_bold</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+    </style>
+
+    <!-- use for setting texts like equalizer and ...-->
+    <style name="Theme.MusicPlayer.H5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">@font/noto_regular</item>
         <item name="fontFamily">@font/noto_regular</item>
         <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
-    <style name="Theme.MusicPlayer.H3" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="android:textSize">12dp</item>
-        <item name="android:fontFamily">@font/noto_regular</item>
-        <item name="fontFamily">@font/noto_regular</item>
-        <item name="android:textColor">@color/darkGray</item>
-    </style>
-
-    <!-- use for name of track artists-->
-    <style name="Theme.MusicPlayer.Caption" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textSize">11dp</item>
-        <item name="lineHeight">18dp</item>
+    <!-- use for caption of track and artist and album ...-->
+    <style name="Theme.MusicPlayer.H6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">11sp</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:fontFamily">@font/noto_medium</item>
         <item name="fontFamily">@font/noto_medium</item>

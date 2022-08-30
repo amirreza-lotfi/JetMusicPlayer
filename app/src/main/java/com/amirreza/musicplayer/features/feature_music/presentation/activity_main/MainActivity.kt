@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer
+package com.amirreza.musicplayer.features.feature_music.presentation.activity_main
 
 import android.content.*
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.navigation.findNavController
-import com.amirreza.ActivityEvent
+import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ActivityMainBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerListener
@@ -55,24 +55,41 @@ class MainActivity : AppCompatActivity() {
                             val isTrackPlaying = playingMusicService.isTrackPlaying()
                             val trackPosition = playingMusicService.getCurrentPositionOfTrack()
 
+                            Log.i("abcdefg","MainActivity onFinishTrack -> isTrackPlaying")
+
                             setTrackDetailToBottomSeekbar(nextTrack)
-                            viewModel.onEvent(ActivityEvent.OnTrackFinished(nextTrack,isTrackPlaying,trackPosition))
+                            viewModel.onEvent(
+                                ActivityEvent.OnTrackFinished(
+                                    nextTrack,
+                                    isTrackPlaying,
+                                    trackPosition
+                                )
+                            )
                         }
 
                         override fun onMusicPlayerFinishPlayingAllMedia() {
-                            TODO("Not yet implemented")
+                            updateBottomPlayerSeekbar(0L)
                         }
 
                         override fun isTrackPlaying(boolean: Boolean) {
                             val currentPositionOfTrack = playingMusicService.getCurrentPositionOfTrack()
                             viewModel.onEvent(ActivityEvent.SetIsTrackPlayingLiveData(boolean))
-                            viewModel.onEvent(ActivityEvent.IsTrackPlayingEvent(boolean,currentPositionOfTrack))
+                            viewModel.onEvent(
+                                ActivityEvent.IsTrackPlayingEvent(
+                                    boolean,
+                                    currentPositionOfTrack
+                                )
+                            )
                             updateBottomPlayerSeekbar(currentPositionOfTrack)
                         }
 
-                        override fun onTrackPositionChanged(newPosition: Int) {
+                        override fun onTrackPositionChanged(newPosition: Long) {
+                            Log.i("abcdefg","onTrackPositionChanged -> pos: $newPosition")
 
+                            updateBottomPlayerSeekbar(newPosition)
+                            viewModel.onEvent(ActivityEvent.OnTrackPositionChanged(newPosition))
                         }
+
                     })
 
                     viewModel.observeToPositionOfTrack().observe(this@MainActivity){
@@ -82,6 +99,7 @@ class MainActivity : AppCompatActivity() {
                             binding.bottomTrackPlayer.visibility = GONE
                         }else{
                             binding.bottomTrackPlayer.visibility = VISIBLE
+                            Log.i("abcdefg","MainActivity currentTimerValue -> $it")
                             updateBottomPlayerSeekbar(it)
                         }
                     }
@@ -89,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onServiceDisconnected(p0: ComponentName?) {
-                Log.i("mainActivity", "service DisConnected")
+                playingMusicService = null
             }
         }, BIND_ABOVE_CLIENT)
 
@@ -97,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             setUpPlayingOrPauseButtonImageResource(isPlaying)
             val currentFragmentIsPlayingFragment = currentFragmentIsPlayingFragment()
 
-            if (isPlaying && !currentFragmentIsPlayingFragment ) {
+            if (playingMusicService!=null && !currentFragmentIsPlayingFragment ) {
                 binding.bottomTrackPlayer.visibility = VISIBLE
             }
         }
@@ -111,12 +129,13 @@ class MainActivity : AppCompatActivity() {
             else
                 playingMusicService?.resumeTrack()
 
-            viewModel.onEvent(ActivityEvent.PausePlayButtonClicked(isTrackPlaying,trackPosition))
+            viewModel.onEvent(ActivityEvent.PausePlayButtonClicked(isTrackPlaying, trackPosition))
         }
 
         binding.closeServiceBtn.setOnClickListener {
-            binding.bottomTrackPlayer.visibility = View.GONE
+            binding.bottomTrackPlayer.visibility = GONE
             playingMusicService?.release()
+            playingMusicService = null
         }
 
     }

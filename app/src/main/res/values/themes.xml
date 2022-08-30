@@ -12,9 +12,11 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="divider">?colorPrimaryVariant</item>
-        <item name="textAppearanceHeadline1">@style/Theme.MusicPlayer.H1</item>
-        <item name="textAppearanceHeadline2">@style/Theme.MusicPlayer.H2</item>
+
+        <item name="textAppearanceHeadline1">@style/Theme.MusicPlayer.Title</item>
+        <item name="textAppearanceHeadline4">@style/Theme.MusicPlayer.H4</item>
         <item name="textAppearanceHeadline3">@style/Theme.MusicPlayer.H3</item>
-        <item name="textAppearanceCaption">@style/Theme.MusicPlayer.Caption</item>
+        <item name="textAppearanceHeadline5">@style/Theme.MusicPlayer.H5</item>
+        <item name="textAppearanceHeadline6">@style/Theme.MusicPlayer.H6</item>
     </style>
 </resources>

@@ -8,7 +8,9 @@
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_duration.xml" value="0.1785" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_hidder.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_hider_bottom_playing_music.xml" value="0.103" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_hider_title_playing_fragment.xml" value="0.1265" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_home_items_row.xml" value="0.1765" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_jet_icon.xml" value="0.1515" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_outline_oval_playing_fragment.xml" value="0.157" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_play_playing_fragment.xml" value="0.157" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/background_playing_bottom.xml" value="0.1785" />
@@ -23,10 +25,10 @@
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_slider_curser.xml" value="0.157" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/drawable/ic_track_24.xml" value="0.156" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_home.xml" value="0.22" />
-        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_playing_music.xml" value="0.37528604118993136" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_playing_music.xml" value="0.5" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/fragment_tracks.xml" value="0.17083333333333334" />
-        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/item_track.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/item_track.xml" value="0.5" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/view_home_action_item.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/view_item_list.xml" value="0.17083333333333334" />
         <entry key="..\:/Users/TGr.h/AndroidStudioProjects/MusicPlayer/app/src/main/res/layout/view_jet_seekbar.xml" value="0.3333333333333333" />
