@@ -33,8 +33,8 @@ class JetApplication:Application() {
             viewModel {
                 HomeViewModel(get())
             }
-            viewModel { (bundle:Bundle)->
-                PlayingMusicViewModel(bundle)
+            viewModel {
+                PlayingMusicViewModel()
             }
             viewModel { (bundle:Bundle)->
                 TrackViewModel(bundle)

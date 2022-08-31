@@ -20,6 +20,7 @@ import org.koin.android.ext.android.inject
 
 
 class PlayingMusicService: Service() {
+    private lateinit var tracks:ArrayList<Track>
     private lateinit var playerManager: PlayerManager
     private lateinit var musicPlayerNotification:MusicPlayerNotification
     private val exoPlayer by inject<ExoPlayer>()
@@ -31,7 +32,7 @@ class PlayingMusicService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let { _intent->
-            val tracks:ArrayList<Track> = _intent.getParcelableArrayListExtra(EXTRA_TRACK_LIST) ?: arrayListOf()
+            tracks = _intent.getParcelableArrayListExtra(EXTRA_TRACK_LIST) ?: arrayListOf()
             val indexOfCurrentTrack = _intent.getIntExtra(EXTRA_TRACK_CLICKED_POSITION,0)
             playerManager = PlayerManager(tracks,exoPlayer,indexOfCurrentTrack)
             musicPlayerNotification = MusicPlayerNotification(this@PlayingMusicService,NotificationManagerCompat.from(this@PlayingMusicService))
@@ -47,8 +48,6 @@ class PlayingMusicService: Service() {
         stopForeground(true)
         Log.i("123456789","destroy called")
     }
-
-
 
     fun getCurrentTrack():Track{
         return playerManager.getCurrentTrack()
@@ -104,6 +103,9 @@ class PlayingMusicService: Service() {
         fun getService(): PlayingMusicService = this@PlayingMusicService
     }
 
+    fun getCurrentTrackIndex(): Int {
+        return playerManager.getCurrentTrackIndex()
+    }
     fun release(){
         playerManager.release()
         stopForeground(true)

@@ -18,6 +18,7 @@ import com.amirreza.musicplayer.databinding.FragmentHomeBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Artist
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
+import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.components.HomeActionItem
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.*
@@ -145,11 +146,10 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
     override fun <T> click(item: T) {
         viewModel.tracksLiveData.value?.let {
             val bundle = Bundle()
-
-            bundle.putInt("2",it.indexOf(item as Track))
+            MainActivity.playingMusicService = null
+            bundle.putInt("IndexOfClickedTrack",it.indexOf(item as Track))
             bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it as ArrayList)
             findNavController().navigate(R.id.action_homeFragment_to_playingMusicFragment,bundle)
         }
     }
-
 }

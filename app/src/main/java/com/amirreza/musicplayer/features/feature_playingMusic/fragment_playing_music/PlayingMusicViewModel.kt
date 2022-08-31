@@ -15,13 +15,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayingMusicViewModel(
-    bundle: Bundle
-) : JetViewModel() {
-    private val _trackList = MutableLiveData<List<Track>>()
-    val trackList: LiveData<List<Track>> = _trackList
+class PlayingMusicViewModel: JetViewModel() {
 
-    private val _currentTrack = MutableLiveData<Track>()
+    val _currentTrack = MutableLiveData<Track>()
     val currentTrack: LiveData<Track> = _currentTrack
 
     private val _trackPosition = MutableLiveData(0L)
@@ -42,12 +38,6 @@ class PlayingMusicViewModel(
     var indexOfSelectedItem = 0
 
     private var durationTimerJob: Job? = null
-
-    init {
-        _trackList.value = bundle.getParcelableArrayList(EXTRA_TRACK_LIST)
-        indexOfSelectedItem = bundle.getInt(EXTRA_TRACK_CLICKED_POSITION)
-        _currentTrack.value = _trackList.value!![indexOfSelectedItem]
-    }
 
     fun startTimer(trackPos: Long = trackPosition.value!!) {
         _trackPosition.postValue(trackPos)

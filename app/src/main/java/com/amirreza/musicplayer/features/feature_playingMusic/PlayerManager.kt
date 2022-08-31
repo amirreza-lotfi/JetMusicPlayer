@@ -95,8 +95,11 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
         })
     }
 
+    fun getCurrentTrackIndex() = exoPlayer.currentMediaItemIndex
+
     fun release(){
         exoPlayer.stop()
+
     }
 
 }

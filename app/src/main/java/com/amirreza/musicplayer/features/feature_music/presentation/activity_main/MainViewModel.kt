@@ -4,18 +4,29 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.entity.JetMusicTimer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    private val _currentTrack = MutableLiveData<Track>()
+    val _currentTrack = MutableLiveData<Track>()
     val currentTrack: LiveData<Track> = _currentTrack
 
-    private val _trackDuration = MutableLiveData(JetMusicTimer())
+    private val _showingLandingFragment = MutableLiveData(true)
+    val showingLandingFragment:LiveData<Boolean> = _showingLandingFragment
+
+    val _trackDuration = MutableLiveData(JetMusicTimer())
     val trackPosition: LiveData<JetMusicTimer> = _trackDuration
 
-    private val _isTrackPlaying = MutableLiveData(false)
+    val _isTrackPlaying = MutableLiveData(false)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
+
+    private var showingLandingPageTimeJob: Job? = null
+
 
     fun onEvent(event: ActivityEvent){
         when(event){
@@ -67,6 +78,7 @@ class MainViewModel : ViewModel() {
             is ActivityEvent.OnTrackPositionChanged->{
                 _trackDuration.value?.startTimer(event.newPosition)
             }
+            else -> {}
         }
     }
 
@@ -80,5 +92,20 @@ class MainViewModel : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         _trackDuration.value?.stopTime()
+    }
+
+    fun showingLandingPageTimer(){
+        showingLandingPageTimeJob = viewModelScope.launch(Dispatchers.IO) {
+            var timer = 0
+            while(true){
+                if(timer<=3){
+                    timer+=1
+                    delay(1000)
+                }else{
+                    _showingLandingFragment.postValue(false)
+                    showingLandingPageTimeJob?.cancel()
+                }
+            }
+        }
     }
 }

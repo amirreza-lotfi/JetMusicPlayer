@@ -13,6 +13,8 @@ import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
+import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity
+import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity.Companion.playingMusicService
 import com.amirreza.musicplayer.features.feature_playingMusic.JetSeekBar
 import com.amirreza.musicplayer.features.feature_playingMusic.OnSeekbarEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
@@ -27,8 +29,7 @@ import org.koin.core.parameter.parametersOf
 
 class PlayingMusicFragment : JetFragment() {
     lateinit var binding: FragmentPlayingMusicBinding
-    private val viewModel: PlayingMusicViewModel by inject() { parametersOf(this.arguments) }
-    private var playingMusicService: PlayingMusicService? = null
+    private val viewModel: PlayingMusicViewModel by inject()
     lateinit var slider: JetSeekBar
     lateinit var intentToPlayingService: Intent
 
@@ -38,13 +39,29 @@ class PlayingMusicFragment : JetFragment() {
     ): View {
         binding = FragmentPlayingMusicBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bundle = Bundle()
-        bundle.putInt("2",12)
+
         intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
+
+        if (playingMusicService == null) {
+            val tracks = this.arguments?.getParcelableArrayList<Track>(EXTRA_TRACK_LIST) ?: arrayListOf()
+            viewModel.indexOfSelectedItem = this.arguments?.getInt("IndexOfClickedTrack") ?: 0
+
+            viewModel._currentTrack.value = tracks[ viewModel.indexOfSelectedItem]
+            startPlayingTrackService(intentToPlayingService, tracks)
+        }else{
+            viewModel._currentTrack.value = playingMusicService!!.getCurrentTrack()
+            viewModel.indexOfSelectedItem = playingMusicService!!.getCurrentTrackIndex()
+        }
+        getNotificationActions()
+        bindToPlayingMusicService(intentToPlayingService)
+
+
+
         slider = binding.slider
         val widthOfSeekbar =
             ((getScreenWidth(requireActivity())) - convertDpToPixel(52f, requireContext())).toInt()
@@ -54,12 +71,6 @@ class PlayingMusicFragment : JetFragment() {
             viewModel.trackPosition.value ?: 0L,
             widthOfSeekbar
         )
-
-        viewModel.trackList.value?.let { tracks ->
-            startPlayingTrackService(intentToPlayingService, tracks as ArrayList)
-            getNotificationActions()
-            bindToPlayingMusicService(intentToPlayingService)
-        }
 
         viewModel.currentTrack.observe(viewLifecycleOwner) { current ->
             playingMusicService?.let { playingMusicService ->
@@ -74,12 +85,6 @@ class PlayingMusicFragment : JetFragment() {
                 0L,
                 widthOfSeekbar
             )
-
-            Log.i(
-                "fragmentPLayingggg",
-                "track changed -> max Value = ${viewModel.currentTrack.value?.duration ?: 0}  current = ${viewModel.trackPosition.value ?: 0L} currentLiveData= ${viewModel.trackPosition.value}"
-            )
-
             binding.slider.setOnSeekbarTouchedListener(object : OnSeekbarEvent {
                 override fun onCurrentPositionChanged(touchedPosition: Long) {
                     playingMusicService?.seekTrackTo(touchedPosition)
@@ -120,7 +125,7 @@ class PlayingMusicFragment : JetFragment() {
 
     private fun startPlayingTrackService(intent: Intent, arrayList: ArrayList<Track>) {
         intent.putParcelableArrayListExtra(EXTRA_TRACK_LIST, arrayList)
-        intent.putExtra(EXTRA_TRACK_CLICKED_POSITION,viewModel.indexOfSelectedItem)
+        intent.putExtra(EXTRA_TRACK_CLICKED_POSITION, viewModel.indexOfSelectedItem)
         activity?.startService(intent)
     }
 
@@ -131,10 +136,11 @@ class PlayingMusicFragment : JetFragment() {
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
             playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
-
-            viewModel.startTimer()
+            viewModel.startTimer(playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
 
             playingMusicService?.let { playingMusicService ->
+
+
                 binding.pausePlayBtn.setOnClickListener {
                     viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
                     if (viewModel.isTrackPlaying.value == true) {
@@ -288,5 +294,6 @@ class PlayingMusicFragment : JetFragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.unregisterReceiver(broadcastReceiver)
+
     }
 }

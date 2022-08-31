@@ -19,4 +19,7 @@ sealed class ActivityEvent{
     object OnCloseButtonClick: ActivityEvent()
     data class OnServiceAttached(val newTrack: Track, val trackPosition: Long): ActivityEvent()
     data class PausePlayButtonClicked(val isTrackPlaying: Boolean, val trackPosition: Long): ActivityEvent()
+    object FragmentChangedToPlayingFragment:ActivityEvent()
+    object FragmentChangedToOtherFragments:ActivityEvent()
+
 }
