@@ -77,7 +77,7 @@ class PlayingMusicViewModel: JetViewModel() {
 
             }
             is PlayingFragmentEvent.PausePlayButtonClicked -> {
-                if (_isTrackPlaying.value!!) {
+                if (event.isPlaying) {
                     stopTimer()
                 } else {
                     startTimer()

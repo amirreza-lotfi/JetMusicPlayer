@@ -11,5 +11,5 @@ sealed class PlayingFragmentEvent{
     data class OnTrackFinished(val nextTrack: Track):PlayingFragmentEvent()
     data class OnNextTrackClicked(val nextTrack: Track):PlayingFragmentEvent()
     data class OnPreviousTrackClicked(val previousTrack: Track):PlayingFragmentEvent()
-    object PausePlayButtonClicked:PlayingFragmentEvent()
+    data class PausePlayButtonClicked(val isPlaying:Boolean):PlayingFragmentEvent()
 }

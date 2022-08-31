@@ -48,12 +48,13 @@ class PlayingMusicFragment : JetFragment() {
         intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
 
         if (playingMusicService == null) {
-            val tracks = this.arguments?.getParcelableArrayList<Track>(EXTRA_TRACK_LIST) ?: arrayListOf()
+            val tracks =
+                this.arguments?.getParcelableArrayList<Track>(EXTRA_TRACK_LIST) ?: arrayListOf()
             viewModel.indexOfSelectedItem = this.arguments?.getInt("IndexOfClickedTrack") ?: 0
 
-            viewModel._currentTrack.value = tracks[ viewModel.indexOfSelectedItem]
+            viewModel._currentTrack.value = tracks[viewModel.indexOfSelectedItem]
             startPlayingTrackService(intentToPlayingService, tracks)
-        }else{
+        } else {
             viewModel._currentTrack.value = playingMusicService!!.getCurrentTrack()
             viewModel.indexOfSelectedItem = playingMusicService!!.getCurrentTrackIndex()
         }
@@ -142,7 +143,11 @@ class PlayingMusicFragment : JetFragment() {
 
 
                 binding.pausePlayBtn.setOnClickListener {
-                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
+                    viewModel.onUiEvent(
+                        PlayingFragmentEvent.PausePlayButtonClicked(
+                            playingMusicService.isTrackPlaying()
+                        )
+                    )
                     if (viewModel.isTrackPlaying.value == true) {
                         playingMusicService.pauseTrack()
                     } else {
@@ -214,9 +219,12 @@ class PlayingMusicFragment : JetFragment() {
             _context?.let { context ->
                 _intent?.let { intent ->
                     when (intent.extras?.getString("actionName") ?: "") {
+
                         NotificationActions.NEXT.actionName -> {
+                            Log.i("MainMain", "playingFragment")
+
                             playingMusicService?.let { playingMusicService ->
-                                val newTrack = playingMusicService.playNextTrack()
+                                val newTrack = playingMusicService.getCurrentTrack()
                                 viewModel.onUiEvent(
                                     PlayingFragmentEvent.OnNextTrackClicked(
                                         newTrack
@@ -225,8 +233,10 @@ class PlayingMusicFragment : JetFragment() {
                             }
                         }
                         NotificationActions.PREVIOUS.actionName -> {
+                            Log.i("MainMain", "playingFragment")
+
                             playingMusicService?.let { playingMusicService ->
-                                val newTrack = playingMusicService.playPreviousTrack()
+                                val newTrack = playingMusicService.getCurrentTrack()
                                 viewModel.onUiEvent(
                                     PlayingFragmentEvent.OnNextTrackClicked(
                                         newTrack
@@ -235,18 +245,21 @@ class PlayingMusicFragment : JetFragment() {
                             }
                         }
                         NotificationActions.CLOSE.actionName -> {
+                            Log.i("MainMain", "playingFragment")
+
                             playingMusicService?.onDestroy()
-                            //todo
+                            findNavController().popBackStack()
+
                         }
                         NotificationActions.PLAY.actionName -> {
                             playingMusicService?.let { service ->
-                                if (service.isTrackPlaying()) {
-                                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
-                                    service.pauseTrack()
-                                } else {
-                                    viewModel.onUiEvent(PlayingFragmentEvent.PausePlayButtonClicked)
-                                    service.resumeTrack()
-                                }
+                                Log.i("MainMain", "playingFragment")
+                                viewModel.onUiEvent(
+                                    PlayingFragmentEvent.SetIsTrackPlayingLiveData(
+                                        service.isTrackPlaying(),
+                                        service.getCurrentPositionOfTrack()
+                                    )
+                                )
                             }
                         }
 
