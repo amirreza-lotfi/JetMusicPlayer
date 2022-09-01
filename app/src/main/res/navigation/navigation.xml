@@ -27,6 +27,7 @@
         android:id="@+id/playingMusicFragment"
         android:name="com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_music.PlayingMusicFragment"
         android:label="fragment_playing_music"
+        app:route="playingFragmentRoute"
         tools:layout="@layout/fragment_playing_music" />
     <fragment
         android:id="@+id/tracksFragment"

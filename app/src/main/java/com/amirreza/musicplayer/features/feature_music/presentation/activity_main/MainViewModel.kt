@@ -29,7 +29,7 @@ class MainViewModel : ViewModel() {
     private var showingLandingPageTimeJob: Job? = null
 
     init {
-        showingLandingPageTimer()
+        //showingLandingPageTimer()
     }
 
     fun onEvent(event: ActivityEvent) {

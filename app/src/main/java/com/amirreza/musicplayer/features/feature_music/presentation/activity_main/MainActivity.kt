@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomTrackPlayer.setOnClickListener {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.action_homeFragment_to_playingMusicFragment)
+            findNavController(R.id.fragmentContainerView).navigate("playingFragmentRoute")
         }
 
     }
