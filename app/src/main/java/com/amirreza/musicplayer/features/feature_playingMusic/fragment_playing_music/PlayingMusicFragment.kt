@@ -39,7 +39,6 @@ class PlayingMusicFragment : JetFragment() {
     ): View {
         binding = FragmentPlayingMusicBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -251,9 +250,8 @@ class PlayingMusicFragment : JetFragment() {
                             findNavController().popBackStack()
 
                         }
-                        NotificationActions.PLAY.actionName -> {
+                        NotificationActions.PLAY_PAUSE.actionName -> {
                             playingMusicService?.let { service ->
-                                Log.i("MainMain", "playingFragment")
                                 viewModel.onUiEvent(
                                     PlayingFragmentEvent.SetIsTrackPlayingLiveData(
                                         service.isTrackPlaying(),

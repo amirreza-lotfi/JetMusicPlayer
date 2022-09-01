@@ -58,16 +58,21 @@ class PlayingMusicService: Service() {
     }
     fun pauseTrack(){
         rememberedTrackSeekbarPosition = playerManager.getTrackCurrentPosition()
+        val isPlaying = !playerManager.isAnyTrackPlaying()
+        Log.i("musicPlayerNotification","pause : isPlaying -> $isPlaying")
         playerManager.pause()
-        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),isPlaying)
     }
     fun resumeTrack(){
+        val isPlaying = !playerManager.isAnyTrackPlaying()
+        Log.i("musicPlayerNotification","resume : isPlaying -> $isPlaying")
         if(rememberedTrackSeekbarPosition==0L){
             playerManager.play()
         }else{
             playerManager.resumeTrack(rememberedTrackSeekbarPosition)
-            musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
         }
+        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),isPlaying)
+
     }
     fun playPreviousTrack(): Track {
         playerManager.playPrevious()

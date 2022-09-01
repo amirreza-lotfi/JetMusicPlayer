@@ -22,6 +22,7 @@ sealed class ActivityEvent {
     data class NotificationNextAction(val trackPosition: Long) : ActivityEvent()
     data class NotificationPreviousAction(val trackPosition: Long) : ActivityEvent()
     object NotificationCloseAction: ActivityEvent()
+    object AllTracksFinished: ActivityEvent()
     data class NotificationPlayPauseAction(val trackPosition: Long, val isTrackPlaying: Boolean) : ActivityEvent()
 
 }

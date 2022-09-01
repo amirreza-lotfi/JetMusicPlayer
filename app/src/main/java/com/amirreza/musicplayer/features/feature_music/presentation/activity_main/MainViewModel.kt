@@ -97,6 +97,10 @@ class MainViewModel : ViewModel() {
                     _trackDuration.value?.stopTime()
                 }
             }
+            is ActivityEvent.AllTracksFinished->{
+                _trackDuration.value?.stopTime()
+                _showingLandingFragment.value = false
+            }
         }
     }
 

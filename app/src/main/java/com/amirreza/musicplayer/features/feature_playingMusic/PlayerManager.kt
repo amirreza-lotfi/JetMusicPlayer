@@ -99,7 +99,6 @@ class PlayerManager(private val tracks: ArrayList<Track>,private val exoPlayer: 
 
     fun release(){
         exoPlayer.stop()
-
     }
 
 }

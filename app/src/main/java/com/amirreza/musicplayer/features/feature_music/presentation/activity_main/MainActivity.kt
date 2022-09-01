@@ -68,7 +68,9 @@ class MainActivity : AppCompatActivity() {
                             viewModel.onEvent(ActivityEvent.OnTrackFinished(isTrackPlaying, trackPosition))
                         }
                     }
-                    override fun onMusicPlayerFinishPlayingAllMedia() {}
+                    override fun onMusicPlayerFinishPlayingAllMedia() {
+                        viewModel.onEvent(ActivityEvent.AllTracksFinished)
+                    }
                     override fun isTrackPlaying(boolean: Boolean) {}
                     override fun onTrackPositionChanged(newPosition: Long) {}
                 })
@@ -149,13 +151,11 @@ class MainActivity : AppCompatActivity() {
                                     setTrackDetailToBottomSeekbar()
                                 }
                             }
-
                             NotificationActions.CLOSE.actionName -> {
                                 viewModel.onEvent(ActivityEvent.OnCloseButtonClick)
                                 playingMusicService?.release()
                             }
-
-                            NotificationActions.PLAY.actionName -> {
+                            NotificationActions.PLAY_PAUSE.actionName -> {
                                 playingMusicService?.let { service ->
                                     val isTrackPlaying = service.isTrackPlaying()
                                     setTrackDetailToBottomSeekbar()
