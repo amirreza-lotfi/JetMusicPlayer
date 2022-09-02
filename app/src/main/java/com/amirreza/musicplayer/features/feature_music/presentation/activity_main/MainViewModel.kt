@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_playingMusic.entity.JetMusicTimer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainViewModel : ViewModel() {
 
@@ -29,7 +26,7 @@ class MainViewModel : ViewModel() {
     private var showingLandingPageTimeJob: Job? = null
 
     init {
-        //showingLandingPageTimer()
+        showingLandingPageTimer()
     }
 
     fun onEvent(event: ActivityEvent) {
@@ -113,18 +110,19 @@ class MainViewModel : ViewModel() {
         _trackDuration.value?.stopTime()
     }
 
-    fun showingLandingPageTimer() {
+    private fun showingLandingPageTimer() {
         showingLandingPageTimeJob = viewModelScope.launch(Dispatchers.IO) {
             var timer = 0
             while (true) {
                 if (timer <= 3) {
                     timer += 1
-                    delay(1000)
+                    delay(800)
                 } else {
                     _showingLandingFragment.postValue(false)
-                    showingLandingPageTimeJob?.cancel()
+                    break
                 }
             }
+            cancel()
         }
     }
 }

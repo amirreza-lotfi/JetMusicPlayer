@@ -156,11 +156,14 @@ class PlayingMusicFragment : JetFragment() {
 
                 binding.playNextTrack.setOnClickListener {
                     val newTrack = playingMusicService.playNextTrack()
+                    playingMusicService.playTrack()
+
                     viewModel.onUiEvent(PlayingFragmentEvent.OnNextTrackClicked(newTrack))
                 }
 
                 binding.playPreviousTrack.setOnClickListener {
                     val newTrack = playingMusicService.playPreviousTrack()
+                    playingMusicService.playTrack()
                     viewModel.onUiEvent(
                         PlayingFragmentEvent.OnPreviousTrackClicked(
                             newTrack
@@ -220,10 +223,10 @@ class PlayingMusicFragment : JetFragment() {
                     when (intent.extras?.getString("actionName") ?: "") {
 
                         NotificationActions.NEXT.actionName -> {
-                            Log.i("MainMain", "playingFragment")
 
                             playingMusicService?.let { playingMusicService ->
                                 val newTrack = playingMusicService.getCurrentTrack()
+                                playingMusicService.playTrack()
                                 viewModel.onUiEvent(
                                     PlayingFragmentEvent.OnNextTrackClicked(
                                         newTrack
@@ -236,6 +239,7 @@ class PlayingMusicFragment : JetFragment() {
 
                             playingMusicService?.let { playingMusicService ->
                                 val newTrack = playingMusicService.getCurrentTrack()
+                                playingMusicService.playTrack()
                                 viewModel.onUiEvent(
                                     PlayingFragmentEvent.OnNextTrackClicked(
                                         newTrack
@@ -244,9 +248,9 @@ class PlayingMusicFragment : JetFragment() {
                             }
                         }
                         NotificationActions.CLOSE.actionName -> {
-                            Log.i("MainMain", "playingFragment")
 
-                            playingMusicService?.onDestroy()
+                            playingMusicService?.release()
+                            playingMusicService = null
                             findNavController().popBackStack()
 
                         }

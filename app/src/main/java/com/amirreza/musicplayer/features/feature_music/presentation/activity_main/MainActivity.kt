@@ -36,13 +36,17 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        navigateToHomeFragmentAfterThreeSecond()
+        //navigateToHomeFragmentAfterThreeSecond()
+
+        viewModel.showingLandingFragment.observe(this) { mustShow->
+            if(!mustShow) {
+                findNavController(R.id.fragmentContainerView).navigate("homeFragment")
+            }
+        }
 
         viewModel.bottomPlayingMustShow.observe(this) { mustShow ->
             binding.bottomTrackPlayer.visibility = if (mustShow) VISIBLE else GONE
         }
-
-
 
         observeToChangingFragment { destination ->
 
@@ -180,9 +184,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToHomeFragmentAfterThreeSecond() {
-        viewModel.showingLandingFragment.observe(this) {
-            findNavController(R.id.fragmentContainerView).navigate(R.id.action_landingFragment_to_homeFragment)
-        }
+
     }
 
     private fun observeToChangingFragment(onDo: (destination: String) -> Unit) {

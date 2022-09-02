@@ -9,6 +9,7 @@
         android:id="@+id/homeFragment"
         android:name="com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.HomeFragment"
         android:label="fragment_home"
+        app:route="homeFragment"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_playingMusicFragment"

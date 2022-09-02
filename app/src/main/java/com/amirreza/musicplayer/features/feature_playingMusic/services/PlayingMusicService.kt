@@ -52,36 +52,32 @@ class PlayingMusicService: Service() {
     fun getCurrentTrack():Track{
         return playerManager.getCurrentTrack()
     }
-    private fun playTrack(){
-        playerManager.play()
+    fun playTrack(){
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        playerManager.play()
     }
     fun pauseTrack(){
+        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
         rememberedTrackSeekbarPosition = playerManager.getTrackCurrentPosition()
-        val isPlaying = !playerManager.isAnyTrackPlaying()
-        Log.i("musicPlayerNotification","pause : isPlaying -> $isPlaying")
         playerManager.pause()
-        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),isPlaying)
     }
     fun resumeTrack(){
-        val isPlaying = !playerManager.isAnyTrackPlaying()
-        Log.i("musicPlayerNotification","resume : isPlaying -> $isPlaying")
+        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+
         if(rememberedTrackSeekbarPosition==0L){
             playerManager.play()
         }else{
             playerManager.resumeTrack(rememberedTrackSeekbarPosition)
         }
-        musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),isPlaying)
-
     }
     fun playPreviousTrack(): Track {
-        playerManager.playPrevious()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        playerManager.playPrevious()
         return playerManager.getCurrentTrack()
     }
     fun playNextTrack(): Track {
-        playerManager.playNextTrack()
         musicPlayerNotification.updateNotification(playerManager.getCurrentTrack(),playerManager.isAnyTrackPlaying())
+        playerManager.playNextTrack()
         return playerManager.getCurrentTrack()
     }
     fun isTrackPlaying():Boolean{
