@@ -1,11 +1,14 @@
 package com.amirreza.musicplayer.features.feature_music.presentation.activity_main
 
 import android.content.*
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.navigation.*
 import com.amirreza.musicplayer.R
@@ -23,8 +26,9 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var playingMusicService: PlayingMusicService? = null
     }
+
     lateinit var binding: ActivityMainBinding
-    val mainViewModel:MainViewModel by viewModel()
+    val mainViewModel: MainViewModel by viewModel()
     var screenWidth: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         observeToChangingFragment { destination ->
+            changeStatusBarByFragment(destination)
 
             if (destinationIsPlayingFragment(destination)) {
                 mainViewModel.onEvent(ActivityEvent.FragmentChangedToPlayingFragment)
@@ -105,7 +110,12 @@ class MainActivity : AppCompatActivity() {
             val isTrackPlaying = playingMusicService?.isTrackPlaying() ?: false
             val trackPosition = playingMusicService?.getCurrentPositionOfTrack() ?: 0L
 
-            mainViewModel.onEvent(ActivityEvent.PausePlayButtonClicked(isTrackPlaying, trackPosition))
+            mainViewModel.onEvent(
+                ActivityEvent.PausePlayButtonClicked(
+                    isTrackPlaying,
+                    trackPosition
+                )
+            )
 
             if (isTrackPlaying) {
                 playingMusicService?.pauseTrack()
@@ -223,6 +233,17 @@ class MainActivity : AppCompatActivity() {
         return playingMusicService?.getCurrentTrack()?.duration?.toDouble() ?: 1.0
     }
 
+    private fun changeStatusBarByFragment(destination: String){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            if(destinationIsPlayingFragment(destination)){
+                window.statusBarColor = resources.getColor(R.color.lightSkyBlue)
+            }else{
+                window.statusBarColor = resources.getColor(R.color.darkSkyBlue)
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         playingMusicService?.release()

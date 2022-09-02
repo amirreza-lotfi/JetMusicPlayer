@@ -2,12 +2,11 @@ package com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_
 
 import android.content.*
 import android.content.Context.BIND_AUTO_CREATE
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.navigation.fragment.findNavController
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.FragmentPlayingMusicBinding
@@ -15,9 +14,9 @@ import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
 import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity
 import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity.Companion.playingMusicService
+import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.custom_view.JetSeekBar
 import com.amirreza.musicplayer.features.feature_playingMusic.custom_view.OnSeekbarEvent
-import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerListener
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
 import com.amirreza.musicplayer.general.*
