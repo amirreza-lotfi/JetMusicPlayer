@@ -298,7 +298,6 @@ class PlayingMusicFragment : JetFragment() {
     private fun setTrackMainImage(trackArtPath: String) {
         Glide.with(requireContext())
             .load(trackArtPath)
-            .centerCrop()
             .placeholder(R.drawable.ic_album_24)
             .into(binding.trackMainImage)
     }

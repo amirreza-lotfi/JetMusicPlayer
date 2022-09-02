@@ -172,7 +172,8 @@
                 android:id="@+id/trackMainImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:srcCompat="@drawable/ic_launcher_background" />
+                android:scaleType="fitXY"
+                tools:srcCompat="@drawable/img_6" />
 
         </com.google.android.material.card.MaterialCardView>
 
