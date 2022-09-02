@@ -15,11 +15,19 @@ fun getScreenWidth(activity: Activity): Int {
         val windowMetrics = activity.windowManager.currentWindowMetrics
         val insets: Insets = windowMetrics.windowInsets
             .getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
-        windowMetrics.bounds.width() - insets.left - insets.right
+        val with = windowMetrics.bounds.width() - insets.left - insets.right
+        if(with == 0)
+            1
+        else
+            with
     } else {
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        displayMetrics.widthPixels
+        val with = displayMetrics.widthPixels
+        if(with == 0)
+            1
+        else
+            with
     }
 }
 
@@ -36,4 +44,7 @@ fun convertDpToPixel(dp: Float, context: Context?): Float {
 
 fun createVerticalLinearLayoutManager(context: Context): LinearLayoutManager {
     return LinearLayoutManager(context, RecyclerView.VERTICAL,false)
+}
+fun createHorizontalLinearLayoutManager(context: Context): LinearLayoutManager {
+    return LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
 }

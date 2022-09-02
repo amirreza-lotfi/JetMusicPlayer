@@ -26,7 +26,6 @@ class MainViewModel : ViewModel() {
     private var showingLandingPageTimeJob: Job? = null
 
     init {
-        Log.i("MainActivityViewModel", "mustShowLanding: ${_showingLandingFragment.value}")
         showingLandingPageTimer()
     }
 
@@ -97,7 +96,6 @@ class MainViewModel : ViewModel() {
             }
             is ActivityEvent.AllTracksFinished->{
                 _trackDuration.value?.stopTime()
-               // _showingLandingFragment.value = false
             }
         }
     }
@@ -124,7 +122,6 @@ class MainViewModel : ViewModel() {
                         withContext(Dispatchers.Main){
                             _showingLandingFragment.value = false
                         }
-                        Log.i("MainActivityViewModel", "mustShowLanding: ${_showingLandingFragment.value}")
                         break
                     }
                 }

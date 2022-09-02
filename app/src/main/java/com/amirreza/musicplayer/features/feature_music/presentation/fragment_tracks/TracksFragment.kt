@@ -46,10 +46,11 @@ class TracksFragment : JetFragment(), OnItemClickEvent{
 
     override fun <T>click(item: T) {
         viewModel.trackList.value?.let {
-            val bundle = Bundle()
             MainActivity.playingMusicService = null
-            bundle.putInt("IndexOfClickedTrack",it.indexOf(item as Track))
-            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,it)
+            val bundle = Bundle().apply {
+                this.putInt("IndexOfClickedTrack",it.indexOf(item as Track))
+                this.putParcelableArrayList(EXTRA_TRACK_LIST,it)
+            }
             findNavController().navigate(R.id.action_tracksFragment_to_playingMusicFragment,bundle)
         }
     }

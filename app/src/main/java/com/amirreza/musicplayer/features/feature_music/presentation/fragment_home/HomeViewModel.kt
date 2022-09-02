@@ -23,13 +23,6 @@ class HomeViewModel(private val musicRepository: MusicRepository):JetViewModel()
     private val _playListsLiveData = MutableLiveData<List<PlayList>>()
     val playListsLiveData: LiveData<List<PlayList>> = _playListsLiveData
 
-    fun onEvent(event: HomeEvent){
-        when(event){
-            is HomeEvent.PermissionStatus ->{
-                permissionAllowed.value = event.boolean
-            }
-        }
-    }
 
     fun getTracksCount():Int{
         return _tracksLiveData.value?.size ?: 0

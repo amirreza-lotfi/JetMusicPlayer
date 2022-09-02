@@ -3,13 +3,13 @@ package com.amirreza.musicplayer.features.feature_music.presentation.fragment_al
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Album
 import com.amirreza.musicplayer.general.EXTRA_ALBUM_LIST
-import com.amirreza.musicplayer.general.JetViewModel
 
 class AlbumsViewModel(
     bundle:Bundle
-):JetViewModel() {
+): ViewModel() {
 
     private val _albumList = MutableLiveData<ArrayList<Album>>()
     val albumList: LiveData<ArrayList<Album>> = _albumList

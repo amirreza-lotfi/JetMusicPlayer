@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var playingMusicService: PlayingMusicService? = null
     }
-
     lateinit var binding: ActivityMainBinding
     val mainViewModel:MainViewModel by viewModel()
     var screenWidth: Int = 1
@@ -39,10 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.i("mainActivity14401", "onStart")
+
         mainViewModel.showingLandingFragment.observe(this) { mustShow ->
             if (!mustShow) {
-                Log.i("mainActivityMain", "mustShow:$mustShow  navigateToHome")
                 val navController = findNavController(R.id.fragmentContainerView)
                 navController.popBackStack()
                 navController.navigate("homeFragment")
@@ -125,23 +123,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomTrackPlayer.setOnClickListener {
             findNavController(R.id.fragmentContainerView).navigate("playingFragmentRoute")
         }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("mainActivity14401", "onResume")
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("mainActivity14401", "onStop")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("mainActivity14401", "onPause")
 
     }
 
@@ -232,10 +213,6 @@ class MainActivity : AppCompatActivity() {
         return (destination == "com.amirreza.musicplayer:id/playingMusicFragment")
     }
 
-    private fun navigateToHomeFragmentAfterThreeSecond() {
-
-    }
-
     private fun observeToChangingFragment(onDo: (destination: String) -> Unit) {
         findNavController(R.id.fragmentContainerView).addOnDestinationChangedListener { controller, destination, arguments ->
             onDo(destination.displayName)
@@ -248,7 +225,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("mainActivity14401", "onDestroy")
         playingMusicService?.release()
+        playingMusicService = null
     }
 }

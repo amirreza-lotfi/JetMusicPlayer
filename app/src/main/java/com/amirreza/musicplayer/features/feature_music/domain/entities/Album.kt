@@ -10,4 +10,12 @@ data class Album(
     var artistName: String,
     var duration: Long,
     var tracks: MutableList<Track>
-):Parcelable
+):Parcelable, MusicComponentsI{
+
+    override fun getTracks(): ArrayList<Track> {
+        TODO("Not yet implemented")
+    }
+    override fun calculateDuration(): Long {
+        return duration
+    }
+}

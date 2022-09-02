@@ -108,8 +108,6 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         permissions.entries.forEach{
             result = it.value && result
         }
-        Log.i("homeFragment","requestPermissionLauncher: $result" )
-
         if(result)
             setUpUi()
     }
@@ -122,7 +120,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         setPlayListCountInUi()
 
         val recyclerView = binding.itemRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+        recyclerView.layoutManager = createVerticalLinearLayoutManager(requireContext())
         viewModel.tracksLiveData.observe(viewLifecycleOwner){
             recyclerView.adapter = ItemListAdapter(this,requireContext(),it!!)
         }

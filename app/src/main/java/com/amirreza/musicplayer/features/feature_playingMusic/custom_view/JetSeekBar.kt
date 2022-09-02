@@ -1,4 +1,4 @@
-package com.amirreza.musicplayer.features.feature_playingMusic
+package com.amirreza.musicplayer.features.feature_playingMusic.custom_view
 
 import android.annotation.SuppressLint
 import android.content.Context

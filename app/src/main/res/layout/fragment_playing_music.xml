@@ -262,7 +262,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintTop_toTopOf="@+id/pausePlayBtn"/>
 
-            <com.amirreza.musicplayer.features.feature_playingMusic.JetSeekBar
+            <com.amirreza.musicplayer.features.feature_playingMusic.custom_view.JetSeekBar
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

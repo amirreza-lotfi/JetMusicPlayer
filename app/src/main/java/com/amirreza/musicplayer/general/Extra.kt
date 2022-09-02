@@ -16,5 +16,8 @@ object NotificationConst{
 }
 
 enum class NotificationActions(val actionName:String){
-    PLAY_PAUSE("play"),NEXT("next"),PREVIOUS("previous"),CLOSE("close")
+    PLAY_PAUSE("play"),
+    NEXT("next"),
+    PREVIOUS("previous"),
+    CLOSE("close")
 }

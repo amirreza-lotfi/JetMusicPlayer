@@ -47,14 +47,10 @@ class ArtistsFragment : Fragment(), OnItemClickEvent {
     }
 
     override fun <T> click(item: T) {
-        val bundle = Bundle()
-        val clickedArtist = item as Artist
-        Log.i("printing", "${clickedArtist.albums.size}")
-        val albumList = arrayListOf<Album>().apply {
-            this.addAll(clickedArtist.albums)
+        val bundle = Bundle().apply {
+            val albumsOfClickedArtist = (item as Artist).getAlbums()
+            this.putParcelableArrayList(EXTRA_ALBUM_LIST, albumsOfClickedArtist)
         }
-
-        bundle.putParcelableArrayList(EXTRA_ALBUM_LIST, albumList)
         findNavController().navigate(R.id.action_artistsFragment_to_albumsFragment, bundle)
     }
 

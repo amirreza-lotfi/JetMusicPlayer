@@ -9,12 +9,22 @@ data class Artist(
     var albums: MutableList<Album>,
     var songCount: Int,
     var albumCount: Int,
-) : Parcelable{
-    fun calculateDuration():Long{
-        var du = 0L
-        for(album:Album in albums){
-            du += album.duration
+) : Parcelable, MusicComponentsI{
+    override fun calculateDuration():Long{
+        return albums.sumOf { it.duration }
+    }
+
+    override fun getTracks(): ArrayList<Track> {
+        return arrayListOf<Track>().apply {
+            for(album:Album in albums){
+                this.addAll(album.tracks)
+            }
         }
-        return du
+    }
+
+    fun getAlbums():ArrayList<Album>{
+        return arrayListOf<Album>().apply {
+            this.addAll(albums)
+        }
     }
 }

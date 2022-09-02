@@ -15,8 +15,8 @@ import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
 import com.amirreza.musicplayer.features.feature_music.presentation.MusicHelper
 import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity
 import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity.Companion.playingMusicService
-import com.amirreza.musicplayer.features.feature_playingMusic.JetSeekBar
-import com.amirreza.musicplayer.features.feature_playingMusic.OnSeekbarEvent
+import com.amirreza.musicplayer.features.feature_playingMusic.custom_view.JetSeekBar
+import com.amirreza.musicplayer.features.feature_playingMusic.custom_view.OnSeekbarEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayerListener
 import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMusicService
@@ -24,7 +24,6 @@ import com.amirreza.musicplayer.general.*
 import com.amirreza.musicplayer.general.NotificationConst.NOTIFICATION_ACTION_BROADCAST
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 
 
 class PlayingMusicFragment : JetFragment() {

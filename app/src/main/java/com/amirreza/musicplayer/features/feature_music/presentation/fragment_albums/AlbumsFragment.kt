@@ -15,6 +15,7 @@ import com.amirreza.musicplayer.features.feature_music.presentation.fragment_hom
 import com.amirreza.musicplayer.features.feature_music.presentation.fragment_home.util.OnItemClickEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
 import com.amirreza.musicplayer.general.JetFragment
+import com.amirreza.musicplayer.general.createVerticalLinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
@@ -34,24 +35,28 @@ class AlbumsFragment : JetFragment(),OnItemClickEvent {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.title.text = "Albums (${viewModel.albumList.value!!.size})"
-        val rv = binding.itemRecyclerView
-        rv.layoutManager = LinearLayoutManager(requireContext(),RecyclerView.VERTICAL,false)
+        setTitle("Albums (${viewModel.albumList.value!!.size})")
+
+        val albumsRecyclerView = binding.itemRecyclerView.apply {
+            this.layoutManager = createVerticalLinearLayoutManager(requireContext())
+        }
         viewModel.albumList.observe(viewLifecycleOwner){
             it?.let {
-                rv.adapter = ItemListAdapter(this,requireContext(),it)
+                albumsRecyclerView.adapter = ItemListAdapter(this,requireContext(),it)
             }
         }
     }
 
+    private fun setTitle(title:String){
+        binding.title.text = title
+    }
+
     override fun <T> click(item: T) {
         viewModel.albumList.value?.let {
-            val bundle = Bundle()
-            val trackList = (item as Album).tracks
-            val trackListArray = arrayListOf<Track>().apply {
-                this.addAll(trackList)
+            val bundle = Bundle().apply {
+                val trackListArray = (item as Album).getTracks()
+                this.putParcelableArrayList(EXTRA_TRACK_LIST,trackListArray)
             }
-            bundle.putParcelableArrayList(EXTRA_TRACK_LIST,trackListArray)
             findNavController().navigate(R.id.action_albumsFragment_to_tracksFragment,bundle)
         }
     }
