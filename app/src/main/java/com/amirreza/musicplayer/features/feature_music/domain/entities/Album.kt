@@ -13,7 +13,9 @@ data class Album(
 ):Parcelable, MusicComponentsI{
 
     override fun getTracks(): ArrayList<Track> {
-        TODO("Not yet implemented")
+        return arrayListOf<Track>().apply {
+            this.addAll(tracks)
+        }
     }
     override fun calculateDuration(): Long {
         return duration
