@@ -30,7 +30,7 @@ class MusicPlayerNotification(
     fun createNotification(track: Track): Notification {
         createNotificationChannel()
         notificationBuilder = NotificationCompat.Builder(context, NotificationConst.CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_track_24)
+            .setSmallIcon(R.drawable.ic_jet_logo)
             .setLargeIcon(MusicHelper.getBitmapOfTrack(context, track))
             .setContentTitle(track.trackName)
             .setContentText(track.artist)

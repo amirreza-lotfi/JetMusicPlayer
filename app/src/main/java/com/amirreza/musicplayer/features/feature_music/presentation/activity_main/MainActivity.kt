@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Log.i("mainActivity14401", "onStart")
         mainViewModel.showingLandingFragment.observe(this) { mustShow ->
-            Log.i("mainActivityMain", "mustShow:$mustShow")
             if (!mustShow) {
                 Log.i("mainActivityMain", "mustShow:$mustShow  navigateToHome")
                 val navController = findNavController(R.id.fragmentContainerView)
@@ -128,6 +128,23 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.i("mainActivity14401", "onResume")
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("mainActivity14401", "onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("mainActivity14401", "onPause")
+
+    }
+
     private fun setUpPlayingOrPauseButtonImageResource(isTrackPlaying: Boolean) {
         if (isTrackPlaying) {
             binding.playPauseBtn.setImageResource(R.drawable.ic_baseline_pause_24)
@@ -184,6 +201,7 @@ class MainActivity : AppCompatActivity() {
                             NotificationActions.CLOSE.actionName -> {
                                 mainViewModel.onEvent(ActivityEvent.OnCloseButtonClick)
                                 playingMusicService?.release()
+                                playingMusicService = null
                             }
                             NotificationActions.PLAY_PAUSE.actionName -> {
                                 playingMusicService?.let { service ->
@@ -230,6 +248,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.i("mainActivity14401", "onDestroy")
         playingMusicService?.release()
     }
 }
