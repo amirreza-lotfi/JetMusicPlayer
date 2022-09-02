@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.amirreza.musicplayer.features.feature_music.domain.entities.Track
+import com.amirreza.musicplayer.features.feature_music.presentation.activity_main.MainActivity
 import com.amirreza.musicplayer.features.feature_playingMusic.PlayingFragmentEvent
 import com.amirreza.musicplayer.general.EXTRA_TRACK_CLICKED_POSITION
 import com.amirreza.musicplayer.general.EXTRA_TRACK_LIST
@@ -17,10 +18,10 @@ import kotlinx.coroutines.launch
 
 class PlayingMusicViewModel: JetViewModel() {
 
-    val _currentTrack = MutableLiveData<Track>()
+    private val _currentTrack = MutableLiveData<Track>()
     val currentTrack: LiveData<Track> = _currentTrack
 
-    val _trackPosition = MutableLiveData(0L)
+    private val _trackPosition = MutableLiveData(0L)
     val trackPosition: LiveData<Long> = _trackPosition
 
     private val _isLikeClicked = MutableLiveData(false)
@@ -32,7 +33,7 @@ class PlayingMusicViewModel: JetViewModel() {
     private val _isTrackStatusPause = MutableLiveData(false)
     val isTrackStatusPause: LiveData<Boolean> = _isTrackStatusPause
 
-    val _isTrackPlaying = MutableLiveData(true)
+    private val _isTrackPlaying = MutableLiveData(true)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
 
     var indexOfSelectedItem = 0
@@ -69,7 +70,16 @@ class PlayingMusicViewModel: JetViewModel() {
             is PlayingFragmentEvent.OnSeekBarTouched -> {
                 _trackPosition.value = event.position
             }
-
+            is PlayingFragmentEvent.ServiceHasBeenCreated->{
+                _currentTrack.value = event.currentTrack
+                indexOfSelectedItem = event.currentIndex
+                _trackPosition.value = event.currentPositionOfTrack
+                _isTrackPlaying.value = event.isPlaying
+            }
+            is PlayingFragmentEvent.ServiceHasBeenDestroyed->{
+                indexOfSelectedItem = event.currentIndex
+                _currentTrack.value = event.currentTrack
+            }
             is PlayingFragmentEvent.OnTrackFinished -> {
                 startTimer(0)
                 _isTrackPlaying.value = true

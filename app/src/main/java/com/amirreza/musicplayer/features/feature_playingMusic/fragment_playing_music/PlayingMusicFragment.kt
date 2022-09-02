@@ -2,7 +2,6 @@ package com.amirreza.musicplayer.features.feature_playingMusic.fragment_playing_
 
 import android.content.*
 import android.content.Context.BIND_AUTO_CREATE
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
@@ -45,17 +44,18 @@ class PlayingMusicFragment : JetFragment() {
         intentToPlayingService = Intent(requireContext(), PlayingMusicService::class.java)
 
         if (playingMusicService == null) {
-            val tracks =
-                this.arguments?.getParcelableArrayList<Track>(EXTRA_TRACK_LIST) ?: arrayListOf()
-            viewModel.indexOfSelectedItem = this.arguments?.getInt("IndexOfClickedTrack") ?: 0
-
-            viewModel._currentTrack.value = tracks[viewModel.indexOfSelectedItem]
+            val tracks = this.arguments?.getParcelableArrayList<Track>(EXTRA_TRACK_LIST) ?: arrayListOf()
+            viewModel.onUiEvent(PlayingFragmentEvent.ServiceHasBeenDestroyed(tracks[viewModel.indexOfSelectedItem], this.arguments?.getInt("IndexOfClickedTrack") ?: 0))
             startPlayingTrackService(intentToPlayingService, tracks)
         } else {
-            viewModel._currentTrack.value = playingMusicService!!.getCurrentTrack()
-            viewModel.indexOfSelectedItem = playingMusicService!!.getCurrentTrackIndex()
-            viewModel._trackPosition.value = playingMusicService!!.getCurrentPositionOfTrack()
-            viewModel._isTrackPlaying.value = playingMusicService!!.isTrackPlaying()
+            viewModel.onUiEvent(
+                PlayingFragmentEvent.ServiceHasBeenCreated(
+                    playingMusicService!!.getCurrentTrack(),
+                    playingMusicService!!.getCurrentTrackIndex(),
+                    playingMusicService!!.isTrackPlaying(),
+                    playingMusicService!!.getCurrentPositionOfTrack()
+                )
+            )
         }
         getNotificationActions()
         bindToPlayingMusicService(intentToPlayingService)
