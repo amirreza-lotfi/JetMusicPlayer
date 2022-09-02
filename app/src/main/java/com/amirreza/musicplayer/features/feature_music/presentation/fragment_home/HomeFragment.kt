@@ -110,7 +110,7 @@ class HomeFragment : JetFragment(),OnItemClickEvent{
         }
         Log.i("homeFragment","requestPermissionLauncher: $result" )
 
-        if(result == true)
+        if(result)
             setUpUi()
     }
 

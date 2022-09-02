@@ -20,7 +20,7 @@ class PlayingMusicViewModel: JetViewModel() {
     val _currentTrack = MutableLiveData<Track>()
     val currentTrack: LiveData<Track> = _currentTrack
 
-    private val _trackPosition = MutableLiveData(0L)
+    val _trackPosition = MutableLiveData(0L)
     val trackPosition: LiveData<Long> = _trackPosition
 
     private val _isLikeClicked = MutableLiveData(false)
@@ -32,7 +32,7 @@ class PlayingMusicViewModel: JetViewModel() {
     private val _isTrackStatusPause = MutableLiveData(false)
     val isTrackStatusPause: LiveData<Boolean> = _isTrackStatusPause
 
-    private val _isTrackPlaying = MutableLiveData(true)
+    val _isTrackPlaying = MutableLiveData(true)
     val isTrackPlaying: LiveData<Boolean> = _isTrackPlaying
 
     var indexOfSelectedItem = 0
@@ -51,7 +51,7 @@ class PlayingMusicViewModel: JetViewModel() {
         }
     }
 
-    private fun stopTimer() {
+    fun stopTimer() {
         durationTimerJob?.cancel()
     }
 

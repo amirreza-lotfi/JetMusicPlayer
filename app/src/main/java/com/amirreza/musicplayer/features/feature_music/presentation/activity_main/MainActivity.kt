@@ -3,8 +3,10 @@ package com.amirreza.musicplayer.features.feature_music.presentation.activity_ma
 import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.viewModels
 import androidx.navigation.*
 import com.amirreza.musicplayer.R
 import com.amirreza.musicplayer.databinding.ActivityMainBinding
@@ -14,6 +16,8 @@ import com.amirreza.musicplayer.features.feature_playingMusic.services.PlayingMu
 import com.amirreza.musicplayer.general.NotificationActions
 import com.amirreza.musicplayer.general.NotificationConst.NOTIFICATION_ACTION_BROADCAST
 import com.amirreza.musicplayer.general.getScreenWidth
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -21,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     lateinit var binding: ActivityMainBinding
-    val viewModel = MainViewModel()
+    val mainViewModel:MainViewModel by viewModel()
     var screenWidth: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,30 +39,37 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        //navigateToHomeFragmentAfterThreeSecond()
-
-        viewModel.showingLandingFragment.observe(this) { mustShow->
-            if(!mustShow) {
-                findNavController(R.id.fragmentContainerView).navigate("homeFragment")
+        mainViewModel.showingLandingFragment.observe(this) { mustShow ->
+            Log.i("mainActivityMain", "mustShow:$mustShow")
+            if (!mustShow) {
+                Log.i("mainActivityMain", "mustShow:$mustShow  navigateToHome")
+                val navController = findNavController(R.id.fragmentContainerView)
+                navController.popBackStack()
+                navController.navigate("homeFragment")
             }
         }
 
-        viewModel.bottomPlayingMustShow.observe(this) { mustShow ->
+        mainViewModel.bottomPlayingMustShow.observe(this) { mustShow ->
             binding.bottomTrackPlayer.visibility = if (mustShow) VISIBLE else GONE
         }
 
         observeToChangingFragment { destination ->
 
             if (destinationIsPlayingFragment(destination)) {
-                viewModel.onEvent(ActivityEvent.FragmentChangedToPlayingFragment)
+                mainViewModel.onEvent(ActivityEvent.FragmentChangedToPlayingFragment)
             } else {
                 if (playingMusicService == null) {
-                    viewModel.onEvent(ActivityEvent.PlayingServiceIsNotAvailable)
+                    mainViewModel.onEvent(ActivityEvent.PlayingServiceIsNotAvailable)
                 } else {
-                    viewModel.onEvent(ActivityEvent.PlayingServiceIsAlive(playingMusicService!!.getCurrentTrack(), playingMusicService!!.getCurrentPositionOfTrack(), playingMusicService!!.isTrackPlaying()))
+                    mainViewModel.onEvent(
+                        ActivityEvent.PlayingServiceIsAlive(
+                            playingMusicService!!.getCurrentTrack(),
+                            playingMusicService!!.getCurrentPositionOfTrack(),
+                            playingMusicService!!.isTrackPlaying()
+                        )
+                    )
                     setTrackDetailToBottomSeekbar()
-                    viewModel.observeToPositionOfTrack().observe(this@MainActivity) {
+                    mainViewModel.observeToPositionOfTrack().observe(this@MainActivity) {
                         updateBottomPlayerSeekbar(it)
                     }
                 }
@@ -69,19 +80,26 @@ class MainActivity : AppCompatActivity() {
                             setTrackDetailToBottomSeekbar()
                             val isTrackPlaying = service.isTrackPlaying()
                             val trackPosition = service.getCurrentPositionOfTrack()
-                            viewModel.onEvent(ActivityEvent.OnTrackFinished(isTrackPlaying, trackPosition))
+                            mainViewModel.onEvent(
+                                ActivityEvent.OnTrackFinished(
+                                    isTrackPlaying,
+                                    trackPosition
+                                )
+                            )
                         }
                     }
+
                     override fun onMusicPlayerFinishPlayingAllMedia() {
-                        viewModel.onEvent(ActivityEvent.AllTracksFinished)
+                        mainViewModel.onEvent(ActivityEvent.AllTracksFinished)
                     }
+
                     override fun isTrackPlaying(boolean: Boolean) {}
                     override fun onTrackPositionChanged(newPosition: Long) {}
                 })
             }
         }
 
-        viewModel.isTrackPlaying.observe(this) {
+        mainViewModel.isTrackPlaying.observe(this) {
             setUpPlayingOrPauseButtonImageResource(it)
         }
 
@@ -89,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             val isTrackPlaying = playingMusicService?.isTrackPlaying() ?: false
             val trackPosition = playingMusicService?.getCurrentPositionOfTrack() ?: 0L
 
-            viewModel.onEvent(ActivityEvent.PausePlayButtonClicked(isTrackPlaying,trackPosition))
+            mainViewModel.onEvent(ActivityEvent.PausePlayButtonClicked(isTrackPlaying, trackPosition))
 
             if (isTrackPlaying) {
                 playingMusicService?.pauseTrack()
@@ -99,7 +117,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.closeServiceBtn.setOnClickListener {
-            viewModel.onEvent(ActivityEvent.OnCloseButtonClick)
+            mainViewModel.onEvent(ActivityEvent.OnCloseButtonClick)
             playingMusicService?.release()
             playingMusicService = null
         }
@@ -144,26 +162,39 @@ class MainActivity : AppCompatActivity() {
                             NotificationActions.NEXT.actionName -> {
                                 playingMusicService?.let { playingMusicService ->
                                     playingMusicService.playNextTrack()
-                                    viewModel.onEvent(ActivityEvent.NotificationNextAction(playingMusicService.getCurrentPositionOfTrack()))
+                                    mainViewModel.onEvent(
+                                        ActivityEvent.NotificationNextAction(
+                                            playingMusicService.getCurrentPositionOfTrack()
+                                        )
+                                    )
                                     setTrackDetailToBottomSeekbar()
                                 }
                             }
                             NotificationActions.PREVIOUS.actionName -> {
                                 playingMusicService?.let { playingMusicService ->
                                     playingMusicService.playPreviousTrack()
-                                    viewModel.onEvent(ActivityEvent.NotificationPreviousAction(playingMusicService.getCurrentPositionOfTrack()))
+                                    mainViewModel.onEvent(
+                                        ActivityEvent.NotificationPreviousAction(
+                                            playingMusicService.getCurrentPositionOfTrack()
+                                        )
+                                    )
                                     setTrackDetailToBottomSeekbar()
                                 }
                             }
                             NotificationActions.CLOSE.actionName -> {
-                                viewModel.onEvent(ActivityEvent.OnCloseButtonClick)
+                                mainViewModel.onEvent(ActivityEvent.OnCloseButtonClick)
                                 playingMusicService?.release()
                             }
                             NotificationActions.PLAY_PAUSE.actionName -> {
                                 playingMusicService?.let { service ->
                                     val isTrackPlaying = service.isTrackPlaying()
                                     setTrackDetailToBottomSeekbar()
-                                    viewModel.onEvent(ActivityEvent.NotificationPlayPauseAction(service.getCurrentPositionOfTrack(), isTrackPlaying))
+                                    mainViewModel.onEvent(
+                                        ActivityEvent.NotificationPlayPauseAction(
+                                            service.getCurrentPositionOfTrack(),
+                                            isTrackPlaying
+                                        )
+                                    )
                                     if (isTrackPlaying) {
                                         service.pauseTrack()
                                     } else {
@@ -192,6 +223,7 @@ class MainActivity : AppCompatActivity() {
             onDo(destination.displayName)
         }
     }
+
     private fun getCurrentTrackDurationAsDouble(): Double {
         return playingMusicService?.getCurrentTrack()?.duration?.toDouble() ?: 1.0
     }

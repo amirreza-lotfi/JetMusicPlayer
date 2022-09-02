@@ -56,6 +56,8 @@ class PlayingMusicFragment : JetFragment() {
         } else {
             viewModel._currentTrack.value = playingMusicService!!.getCurrentTrack()
             viewModel.indexOfSelectedItem = playingMusicService!!.getCurrentTrackIndex()
+            viewModel._trackPosition.value = playingMusicService!!.getCurrentPositionOfTrack()
+            viewModel._isTrackPlaying.value = playingMusicService!!.isTrackPlaying()
         }
         getNotificationActions()
         bindToPlayingMusicService(intentToPlayingService)
@@ -136,9 +138,14 @@ class PlayingMusicFragment : JetFragment() {
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
             playingMusicService = (p1 as PlayingMusicService.PlayingMusicBinder).getService()
-            viewModel.startTimer(playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
 
+            viewModel.startTimer(playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
             playingMusicService?.let { playingMusicService ->
+                if(playingMusicService.isTrackPlaying()){
+                    viewModel.startTimer(MainActivity.playingMusicService?.getCurrentPositionOfTrack() ?: 0L)
+                }else {
+                    viewModel.stopTimer()
+                }
 
 
                 binding.pausePlayBtn.setOnClickListener {

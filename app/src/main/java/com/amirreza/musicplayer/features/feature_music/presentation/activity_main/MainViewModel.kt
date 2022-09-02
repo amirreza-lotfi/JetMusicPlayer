@@ -26,6 +26,7 @@ class MainViewModel : ViewModel() {
     private var showingLandingPageTimeJob: Job? = null
 
     init {
+        Log.i("MainActivityViewModel", "mustShowLanding: ${_showingLandingFragment.value}")
         showingLandingPageTimer()
     }
 
@@ -96,7 +97,7 @@ class MainViewModel : ViewModel() {
             }
             is ActivityEvent.AllTracksFinished->{
                 _trackDuration.value?.stopTime()
-                _showingLandingFragment.value = false
+               // _showingLandingFragment.value = false
             }
         }
     }
@@ -111,18 +112,24 @@ class MainViewModel : ViewModel() {
     }
 
     private fun showingLandingPageTimer() {
-        showingLandingPageTimeJob = viewModelScope.launch(Dispatchers.IO) {
-            var timer = 0
-            while (true) {
-                if (timer <= 3) {
-                    timer += 1
-                    delay(800)
-                } else {
-                    _showingLandingFragment.postValue(false)
-                    break
+        Log.i("MainActivityViewModel", "mustShowLanding: ${_showingLandingFragment.value}")
+        if(_showingLandingFragment.value==true) {
+            showingLandingPageTimeJob = viewModelScope.launch(Dispatchers.IO) {
+                var timer = 0
+                while (true) {
+                    if (timer <= 3) {
+                        timer += 1
+                        delay(800)
+                    } else {
+                        withContext(Dispatchers.Main){
+                            _showingLandingFragment.value = false
+                        }
+                        Log.i("MainActivityViewModel", "mustShowLanding: ${_showingLandingFragment.value}")
+                        break
+                    }
                 }
+                cancel()
             }
-            cancel()
         }
     }
 }
