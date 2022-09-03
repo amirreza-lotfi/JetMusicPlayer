@@ -3,7 +3,7 @@
   <img src="/screenshots/2.jpg" width="180"/>
   <img src="/screenshots/3.jpg" width="180"/>
   <img src="/screenshots/4.jpg" width="180"/>
-  <img src="/screenshots/4.jpg" width="180"/>
+  <img src="/screenshots/5.jpg" width="180"/>
 </div>
 
 # JetMusicPlayer
